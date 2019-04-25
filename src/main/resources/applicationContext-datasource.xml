@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--扫描-->
+    <!--annotation-config="true" &lt;!&ndash; 是否激活属性注入注解 &ndash;&gt;-->
+    <!--<context:component-scan base-package="com.renewable.gateway" annotation-config="true"/>-->
+
+    <!--该bean用于实现 常量分离。-->
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="order" value="2"/>
+        <property name="ignoreUnresolvablePlaceholders" value="true"/>
+        <!--该常量用于引入同目录下datasource.properties文件中的常量-->
+        <property name="locations">
+            <list>
+                <value>classpath:datasource.properties</value>
+            </list>
+        </property>
+        <!--设置 常量"fileEncoding"，用于设置utf-8编码-->
+        <property name="fileEncoding" value="utf-8"/>
+    </bean>
+
+    <!--数据库连接，用到dbcp的一个连接池。对其中的属性进行设置（用到了上面的datasource.properties中设置的常量-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" init-method="createDataSource">
+    <!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">-->
+        <property name="driverClassName" value="${db.driverClassName}"/>
+        <property name="url" value="${db.url}"/>
+        <property name="username" value="${db.username}"/>
+        <property name="password" value="${db.password}"/>
+        <!-- 连接池启动时的初始值 -->
+        <property name="initialSize" value="${db.initialSize}"/>
+        <!-- 连接池的最大值 -->
+        <property name="maxActive" value="${db.maxActive}"/>
+        <!-- 最大空闲值.当经过一个高峰时间后，连接池可以慢慢将已经用不到的连接慢慢释放一部分，一直减少到maxIdle为止 -->
+        <property name="maxIdle" value="${db.maxIdle}"/>
+        <!-- 最小空闲值.当空闲的连接数少于阀值时，连接池就会预申请去一些连接，以免洪峰来时来不及申请 -->
+        <property name="minIdle" value="${db.minIdle}"/>
+        <!-- 最大建立连接等待时间。如果超过此时间将接到异常。设为－1表示无限制 -->
+        <property name="maxWait" value="${db.maxWait}"/>
+        <!--#给出一条简单的sql语句进行验证 -->
+        <!--<property name="validationQuery" value="select getdate()" />-->
+        <property name="defaultAutoCommit" value="${db.defaultAutoCommit}"/>
+        <!-- 回收被遗弃的（一般是忘了释放的）数据库连接到连接池中 -->
+        <!--<property name="removeAbandoned" value="true" />-->
+        <!-- 数据库连接过多长时间不用将被视为被遗弃而收回连接池中 -->
+        <!--<property name="removeAbandonedTimeout" value="120" />-->
+        <!-- #连接的超时时间，默认为半小时。 -->
+        <property name="minEvictableIdleTimeMillis" value="${db.minEvictableIdleTimeMillis}"/>
+
+        <!--# 失效检查线程运行时间间隔，要小于MySQL默认-->
+        <property name="timeBetweenEvictionRunsMillis" value="40000"/>
+        <!--# 检查连接是否有效-->
+        <property name="testWhileIdle" value="true"/>
+        <!--# 检查连接有效性的SQL语句-->
+        <property name="validationQuery" value="SELECT 1 FROM dual"/>
+    </bean>
+
+    <!--SqlSessionFactory是MyBatis的关键对象,它是单个数据库映射关系经过编译后的内存镜像-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <!--设置数据来源。其中ref属性名，表示引用，引用了上方的"dataSource"的bean-->
+        <!--至于name为什么是"dataSource"是因为该class(org.mybatis.spring.SqlSessionFactoryBean)中有该性质，用于注入-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--设置项目包结构中的映射文件。"classpath*:"指向了项目中resource文件夹，而"mappers/*Mapper.xml"指向mappers文件夹下xml文件-->
+        <property name="mapperLocations" value="classpath*:mappers/*Mapper.xml"></property>
+
+        <!-- 分页插件 -->
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageHelper">
+                    <property name="properties">
+                        <!--设置数据库（因为pagehelper支持多种数据库）-->
+                        <value>
+                            dialect=mysql
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+
+    </bean>
+
+    <!--Mybatis的一个扫描。扫描dao层，为service层提供接口的包-->
+    <bean name="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--设置dao层包位置-->
+        <property name="basePackage" value="com.renewable.gateway.dao"/>
+    </bean>
+
+
+    <!-- 事务管理 -->
+    <!-- 1.事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--数据库-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--事务回滚-->
+        <property name="rollbackOnCommitFailure" value="true"/>
+    </bean>
+
+    <!-- 2.事务详情（事务通知） -->
+    <!--<tx:advice id="txAdvice" transaction-manager="transactionManager">-->
+        <!--<tx:attributes>-->
+            <!--<tx:method name="transfer" propagation="REQUIRED" isolation="DEFAULT"/>-->
+        <!--</tx:attributes>-->
+    <!--</tx:advice>-->
+
+    <!--&lt;!&ndash; 3.AOP编程，利用切入点表达式从目标类方法中 确定增强的连接器，从而获得切入点 &ndash;&gt;-->
+    <!--<aop:config>-->
+        <!--<aop:advisor advice-ref="txAdvice" pointcut="execution(* com.renewable.gateway.service..*.*(..))"/>-->
+    <!--</aop:config>-->
+
+    <!--&lt;!&ndash; 使用@Transactional进行声明式事务管理需要声明下面这行 &ndash;&gt;-->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true"/>
+
+</beans>

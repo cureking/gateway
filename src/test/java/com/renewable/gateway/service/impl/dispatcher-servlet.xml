@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/mvc
+	http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+    <!--包扫面。扫描controller注解。将controller注解到类上，就形成controller注解。实现注释驱动Bean定义，同时将bean自动注入容器中使用。-->
+    <context:component-scan base-package="com.renewable.gateway" annotation-config="true"/>
+
+    <!--类似拦截器。相当于注册了DefaultAnnotationHandlerMapping和AnnotationMethodHandlerAdapter两个bean，配置一些messageconverter。即解决了@Controller注解的使用前提配置。-->
+    <!--可查看https://www.cnblogs.com/shanheyongmu/p/5552427.html-->
+    <mvc:annotation-driven>
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <!--编码配置-->
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/plain;charset=UTF-8</value>
+                        <value>text/html;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+
+            <!--springMVC进行自动反序列化时用到的配置类。-->
+            <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <!--支持的类型设置为json，编码为utf-8-->
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+
+    <!-- 文件上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--上传的最大尺寸。单位字节-->
+        <property name="maxUploadSize" value="10485760"/> <!-- 10m -->
+        <!--分配的内存块大小-->
+        <property name="maxInMemorySize" value="4096"/>
+        <!--默认编码格式-->
+        <property name="defaultEncoding" value="UTF-8"></property>
+    </bean>
+
+
+</beans>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <!--BUG会打印到OutputStreamAppender中-->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <!--编码方式-->
+        <encoding>UTF-8</encoding>
+        <encoder>
+            <!--输出格式-->
+            <pattern>[%d{HH:mm:ss.SSS}][%p][%c{40}][%t] %m%n</pattern>
+        </encoder>
+        <!--过滤器-->
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <!--大于DEBUG格式错误，都会打印-->
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+
+    <!--项目日志。-->
+    <appender name="gateWay" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--<File>d:/gateWay/gateWay.log</File>-->
+        <!--日志输出位置-->
+        <!--<File>/developer/apache-tomcat-7.0.73/logs/gatWay.log</File>-->
+        <File>C:/Users/curek/IdeaProjects/Renewable_Power/gateWay/target/gateWay/logs/gateWay.log</File>
+        <!--采用rolling方式-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--<fileNamePattern>/developer/apache-tomcat-7.0.73/logs/gateWay.log.%d{yyyy-MM-dd}.gz</fileNamePattern>-->
+            <fileNamePattern>
+                C:/Users/curek/IdeaProjects/Renewable_Power/gateWay/gateWay/logs/gateWay.log.%d{yyyy-MM-dd}.gz
+            </fileNamePattern>
+            <append>true</append>
+            <!--最大的存储时期。单位天-->
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <!--编码格式-->
+        <encoder>
+            <pattern>[%d{HH:mm:ss.SSS}][%p][%c{40}][%t] %m%n</pattern>
+        </encoder>
+    </appender>
+
+
+    <!--错误日志。其余配置同上-->
+    <appender name="error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!--<File>d:/gateWay/error.log</File>-->
+        <!--<File>/developer/apache-tomcat-7.0.73/logs/error.log</File>-->
+        <File>C:/Users/curek/IdeaProjects/Renewable_Power/gateway/target/gateWay/logs/error.log</File>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!--<fileNamePattern>/developer/apache-tomcat-7.0.73/logs/error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>-->
+            <fileNamePattern>C:/Users/curek/IdeaProjects/Renewable_Power/gateWay/logs/error.log.%d{yyyy-MM-dd}.gz
+            </fileNamePattern>
+            <!--<fileNamePattern>d:/gateWay/error.log.%d{yyyy-MM-dd}.gz</fileNamePattern>-->
+            <append>true</append>
+            <maxHistory>10</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[%d{HH:mm:ss.SSS}][%p][%c{40}][%t] %m%n</pattern>
+        </encoder>
+        <!--只接受ERROR及以上级别的报错-->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!--logger配置为info级别-->
+    <logger name="com.gateWay" additivity="false" level="INFO">
+        <!--依赖-->
+        <appender-ref ref="gateWay"/>
+        <appender-ref ref="console"/>
+    </logger>
+
+
+    <!-- geelynote mybatis log 日志 -->
+
+    <!--dao层的logger设置为DEBUG级别，以便在日志中查看sql语句（sql执行属于DEBUG级别）-->
+    <logger name="com.gateWay.dao" level="DEBUG"/>
+
+    <!--根节点的级别时DEBUG-->
+    <root level="DEBUG">
+        <appender-ref ref="console"/>
+        <appender-ref ref="error"/>
+    </root>
+
+</configuration>
