@@ -13,12 +13,8 @@ import com.renewable.gateway.dao.InclinationMapper;
 
 import com.renewable.gateway.dao.InclinationRegisterMapper;
 import com.renewable.gateway.dao.SensorRegisterMapper;
-import com.renewable.gateway.pojo.Inclination;
-import com.renewable.gateway.pojo.InclinationDealed;
-import com.renewable.gateway.pojo.InclinationRegister;
-import com.renewable.gateway.pojo.SensorRegister;
+import com.renewable.gateway.pojo.*;
 import com.renewable.gateway.serial.sensor.InclinationDeal526T;
-import com.renewable.gateway.service.IInclinationDealService;
 import com.renewable.gateway.service.IInclinationService;
 import com.renewable.gateway.service.IRegisteredInfoService;
 import com.renewable.gateway.util.DateTimeUtil;
@@ -44,9 +40,6 @@ public class IInclinationServiceImpl implements IInclinationService {
 
     @Autowired
     private InclinationMapper inclinationMapper;
-
-    @Autowired
-    private IInclinationDealService iInclinationDealService;
 
     @Autowired
     private IRegisteredInfoService iRegisteredInfoService;
@@ -158,6 +151,8 @@ public class IInclinationServiceImpl implements IInclinationService {
         //日后需要，这里可以扩展加入方向角  //方向角的计算可以查看ipad上概念化画板/Renewable/未命名8（包含方位角的计算）
         //添加该数据对应的sensorID
         inclination.setSensorId(inclinationRegister.getSensorId());
+
+        inclination.setVersion("NoClean");
 
 
         //数据处理由sql完成
@@ -281,10 +276,10 @@ public class IInclinationServiceImpl implements IInclinationService {
             }
             System.out.println("IInclinationServiceImpl/cleanDatabyPeak: startTime:"+ cycleStartTime+"  endTime:"+cycleEndTime+"  start2String"+ new Date(cycleStartTime)+"  peakInclinationId:"+peakInclination.getId());
             //c.对峰值进行封装 日后便于扩展
-            InclinationDealed inclinationDealed = new InclinationDealed();
-            inclinationDealed = inclinationDealAssemble(peakInclination);
+            InclinationDealedTotal inclinationDealedTotal = new InclinationDealedTotal();
+            inclinationDealedTotal = inclinationDealAssemble(peakInclination);
             //d.保存峰值
-            iInclinationDealService.inclinationData2DB(inclinationDealed);
+//            iInclinationDealService.inclinationData2DB(inclinationDealedTotal);
         }
         //3.保存最新清洗的inclination_id   //不一定是当前的
         long lastTime = startTime + interval * periodCound;
@@ -293,15 +288,15 @@ public class IInclinationServiceImpl implements IInclinationService {
         return iRegisteredInfoService.updateSensor(sensorRegister);
     }
 
-    private InclinationDealed inclinationDealAssemble(Inclination inclination) {
-        InclinationDealed inclinationDealed = new InclinationDealed();
-        inclinationDealed.setOriginId(inclination.getId());
-        inclinationDealed.setSensorId(inclination.getSensorId());
-        inclinationDealed.setAngleX(inclination.getAngleX());
-        inclinationDealed.setAngleY(inclination.getAngleY());
-        inclinationDealed.setAngleTotal(inclination.getAngleTotal());
-        inclinationDealed.setTemperature(inclination.getTemperature());
-        return inclinationDealed;
+    private InclinationDealedTotal inclinationDealAssemble(Inclination inclination) {
+        InclinationDealedTotal inclinationDealedTotal = new InclinationDealedTotal();
+        inclinationDealedTotal.setOriginId(inclination.getId());
+        inclinationDealedTotal.setSensorId(inclination.getSensorId());
+        inclinationDealedTotal.setAngleX(inclination.getAngleX());
+        inclinationDealedTotal.setAngleY(inclination.getAngleY());
+        inclinationDealedTotal.setAngleTotal(inclination.getAngleTotal());
+        inclinationDealedTotal.setTemperature(inclination.getTemperature());
+        return inclinationDealedTotal;
     }
 
     /**
