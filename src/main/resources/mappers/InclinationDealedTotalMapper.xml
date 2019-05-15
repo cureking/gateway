@@ -183,6 +183,12 @@
     from sensor_inclination_deal_total
     where sensor_id = #{sensor_identifier}
   </select>
+  <select id="selectListByVersion" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from sensor_inclination_deal_total
+    where version = #{version}
+  </select>
   <select id="selectListByTime" parameterType="map" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

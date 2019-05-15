@@ -1,17 +1,16 @@
-package com.renewable.gateway.pojo;
-
-import lombok.ToString;
+package com.renewable.gateway.rabbitmq.producer;
 
 import java.io.Serializable;
 import java.util.Date;
 
-@ToString
-public class InclinationDealedTotal implements Serializable {
+public class InclinationTotal implements Serializable {
     private Long id;
 
-    private Long originId;
+    private Integer terminalId;
 
     private Integer sensorId;
+
+    private Long originId;
 
     private Double angleX;
 
@@ -31,10 +30,11 @@ public class InclinationDealedTotal implements Serializable {
 
     private Date createTime;
 
-    public InclinationDealedTotal(Long id, Long originId, Integer sensorId, Double angleX, Double angleY, Double angleTotal, Double directAngle, Double angleInitTotal, Double directAngleInit, Double temperature, String version, Date createTime) {
+    public InclinationTotal(Long id, Integer terminalId, Integer sensorId, Long originId, Double angleX, Double angleY, Double angleTotal, Double directAngle, Double angleInitTotal, Double directAngleInit, Double temperature, String version, Date createTime) {
         this.id = id;
-        this.originId = originId;
+        this.terminalId = terminalId;
         this.sensorId = sensorId;
+        this.originId = originId;
         this.angleX = angleX;
         this.angleY = angleY;
         this.angleTotal = angleTotal;
@@ -46,7 +46,7 @@ public class InclinationDealedTotal implements Serializable {
         this.createTime = createTime;
     }
 
-    public InclinationDealedTotal() {
+    public InclinationTotal() {
         super();
     }
 
@@ -58,12 +58,12 @@ public class InclinationDealedTotal implements Serializable {
         this.id = id;
     }
 
-    public Long getOriginId() {
-        return originId;
+    public Integer getTerminalId() {
+        return terminalId;
     }
 
-    public void setOriginId(Long originId) {
-        this.originId = originId;
+    public void setTerminalId(Integer terminalId) {
+        this.terminalId = terminalId;
     }
 
     public Integer getSensorId() {
@@ -72,6 +72,14 @@ public class InclinationDealedTotal implements Serializable {
 
     public void setSensorId(Integer sensorId) {
         this.sensorId = sensorId;
+    }
+
+    public Long getOriginId() {
+        return originId;
+    }
+
+    public void setOriginId(Long originId) {
+        this.originId = originId;
     }
 
     public Double getAngleX() {

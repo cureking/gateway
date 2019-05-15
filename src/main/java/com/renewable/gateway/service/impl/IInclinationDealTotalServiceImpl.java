@@ -69,4 +69,16 @@ public class IInclinationDealTotalServiceImpl implements IInclinationDealTotalSe
         return ServerResponse.createBySuccess(inclinationVoObjectList);
     }
 
+    /**
+     * 进行数据的上传
+     * @return
+     */
+    @Override
+    public ServerResponse uploadDataList() {
+        List<InclinationDealedTotal> inclinationDealedTotalList = inclinationDealedTotalMapper.selectListByVersion("Cleaned");  //这里以后要集成的Const文件中，另外相关数据字段，应该改为数字（节省带宽，降低出错可能性（写代码））
+
+
+        return null;
+    }
+
 }

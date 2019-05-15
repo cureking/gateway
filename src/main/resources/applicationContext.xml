@@ -29,5 +29,7 @@
     <!--引入分配置文件-->
     <import resource="applicationContext-datasource.xml"/>
 
+    <!--引入分配置文件-rabbit-->
+    <import resource="applicationContext-rabbit.xml"/>
 
 </beans>

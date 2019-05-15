@@ -15,6 +15,12 @@ public class Const {
     public static final String NICKNAME = "nickname";
     public static final String SENSOR_REGISTER_PREFIX = "sensorRegister_";
 
+    /* RabbitMQ static constant name */
+    public static final String RABBITMQ_HOST = "rabbit.server.ip";
+    public static final String RABBITMQ_PORT = "rabbit.server.port";
+    public static final String RABBITMQ_USER_NAME = "rabbit.server.name";
+    public static final String RABBITMQ_USER_PASSWORD = "rabbit.server.password";
+    public static final String RABBITMQ_VIRTURAL_HOST = "rabbit.server.virtual-host";
 
     //传感器类型参数（即协议标识符）
     public interface SensorType {

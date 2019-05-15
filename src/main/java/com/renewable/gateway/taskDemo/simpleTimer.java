@@ -1,11 +1,14 @@
 package com.renewable.gateway.taskDemo;
 
+import com.google.common.collect.Lists;
 import com.mathworks.toolbox.javabuilder.MWClassID;
-import com.mathworks.toolbox.javabuilder.MWException;
 import com.mathworks.toolbox.javabuilder.MWNumericArray;
 import com.renewable.gateway.common.ServerResponse;
 import com.renewable.gateway.common.sensor.InclinationConst;
 
+import com.renewable.gateway.pojo.InclinationDealedTotal;
+import com.renewable.gateway.rabbitmq.producer.InclinationProducer;
+import com.renewable.gateway.rabbitmq.producer.InclinationTotal;
 import com.renewable.gateway.serial.SerialPool;
 import com.renewable.gateway.serial.sensor.InclinationDeal526T;
 import com.renewable.gateway.service.IInclinationService;
@@ -13,14 +16,14 @@ import com.renewable.gateway.service.ISensorDataService;
 import com.renewable.gateway.util.MatlabUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import sinfit.Calcul;
 
-import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 /**
  * @Description：
@@ -39,10 +42,8 @@ public class simpleTimer {
     @Autowired
     private IInclinationService iInclinationService;
 
-
-    static {
-        System.out.println("test_node_init");
-    }
+    @Autowired
+    private InclinationProducer inclinationProducer;
 
     /**
      * 用于实现轮询获取传感器监测数据
@@ -52,7 +53,7 @@ public class simpleTimer {
         log.info("请求监测数据定时任务启动");
 
         System.out.println("simpleTimer first task start.currentTime:" + System.currentTimeMillis());
-        byte[] test = {1, 2, 3, 4};
+//        byte[] test = {1, 2, 3, 4};
 //        SerialPool.sendData("COM1",test);
 //        serialPool.sendData("COM2",test);
 //        SerialPool.sendData("COM3",test);
@@ -65,7 +66,8 @@ public class simpleTimer {
         } else {
             byte[] originArray = serverResponse.getData();
             System.out.println(Arrays.toString(originArray));
-            serialPool.sendData("COM4", originArray);
+//            serialPool.sendData("COM4", originArray);
+            //TODO 这里应该读取缓存，获得目标的地址。
             serialPool.sendData("COM6", originArray);
 //            serialPool.sendData("COM6",originArray);
         }
@@ -108,4 +110,32 @@ public class simpleTimer {
         System.out.println("matlab call process test end");
     }
 
+    @Scheduled(cron = "*/1 * * * * *")  //1秒
+    public void testRabbitMQ(){
+        System.out.println("rabbitMq test start！");
+
+        InclinationDealedTotal inclinationDealedTotal = new InclinationDealedTotal();
+        inclinationDealedTotal.setId(123L);
+        inclinationDealedTotal.setOriginId(12312l);
+        inclinationDealedTotal.setAngleTotal(1231.1);
+        inclinationDealedTotal.setCreateTime(new Date(1231231231));
+
+        InclinationTotal inclinationTotal = inclinationProducer.inclinationTotalAssemble(inclinationDealedTotal);
+        List<InclinationTotal> inclinationTotalList = Lists.newArrayList();
+        inclinationTotalList.add(inclinationTotal);
+        inclinationTotal.setId(124L);
+        inclinationTotalList.add(inclinationTotal);
+
+        try {
+            inclinationProducer.send(inclinationTotalList);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("rabbitMq test end");
+    }
 }

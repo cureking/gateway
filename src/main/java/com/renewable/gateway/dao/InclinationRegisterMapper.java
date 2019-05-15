@@ -15,5 +15,6 @@ public interface InclinationRegisterMapper {
 
     int updateByPrimaryKey(InclinationRegister record);
 
+    //custom
     InclinationRegister selectBySensorKey(Integer sensorId);
 }

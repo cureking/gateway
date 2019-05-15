@@ -39,7 +39,9 @@ public class InclinationRegister {
 
     private Date createTime;
 
-    public InclinationRegister(Integer id, Integer sensorId, Double radius, Double initH1, Double initAngle1, Double initH2, Double initAngle2, Double initH3, Double initAngle3, Double initH4, Double initAngle4, Double initTotalAngle, Double initDirectAngle, Double totalAngleLimit, Double totalInitAngleLimit, Double initX, Double initY, Date createTime) {
+    private Date updateTime;
+
+    public InclinationRegister(Integer id, Integer sensorId, Double radius, Double initH1, Double initAngle1, Double initH2, Double initAngle2, Double initH3, Double initAngle3, Double initH4, Double initAngle4, Double initTotalAngle, Double initDirectAngle, Double totalAngleLimit, Double totalInitAngleLimit, Double initX, Double initY, Date createTime, Date updateTime) {
         this.id = id;
         this.sensorId = sensorId;
         this.radius = radius;
@@ -58,6 +60,7 @@ public class InclinationRegister {
         this.initX = initX;
         this.initY = initY;
         this.createTime = createTime;
+        this.updateTime = updateTime;
     }
 
     public InclinationRegister() {
@@ -206,5 +209,13 @@ public class InclinationRegister {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

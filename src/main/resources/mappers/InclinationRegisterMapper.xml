@@ -21,12 +21,13 @@
       <arg column="init_x" jdbcType="DOUBLE" javaType="java.lang.Double" />
       <arg column="init_y" jdbcType="DOUBLE" javaType="java.lang.Double" />
       <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List" >
     id, sensor_id, radius, init_h1, init_angle1, init_h2, init_angle2, init_h3, init_angle3, 
     init_h4, init_angle4, init_total_angle, init_direct_angle, total_angle_limit, total_init_angle_limit, 
-    init_x, init_y, create_time
+    init_x, init_y, create_time, update_time
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -44,15 +45,15 @@
       init_angle2, init_h3, init_angle3, 
       init_h4, init_angle4, init_total_angle, 
       init_direct_angle, total_angle_limit, total_init_angle_limit, 
-      init_x, init_y, create_time
-      )
+      init_x, init_y, create_time, 
+      update_time)
     values (#{id,jdbcType=INTEGER}, #{sensorId,jdbcType=INTEGER}, #{radius,jdbcType=DOUBLE}, 
       #{initH1,jdbcType=DOUBLE}, #{initAngle1,jdbcType=DOUBLE}, #{initH2,jdbcType=DOUBLE}, 
       #{initAngle2,jdbcType=DOUBLE}, #{initH3,jdbcType=DOUBLE}, #{initAngle3,jdbcType=DOUBLE}, 
       #{initH4,jdbcType=DOUBLE}, #{initAngle4,jdbcType=DOUBLE}, #{initTotalAngle,jdbcType=DOUBLE}, 
       #{initDirectAngle,jdbcType=DOUBLE}, #{totalAngleLimit,jdbcType=DOUBLE}, #{totalInitAngleLimit,jdbcType=DOUBLE}, 
-      #{initX,jdbcType=DOUBLE}, #{initY,jdbcType=DOUBLE}, #{createTime,jdbcType=TIMESTAMP}
-      )
+      #{initX,jdbcType=DOUBLE}, #{initY,jdbcType=DOUBLE}, #{now(),jdbcType=TIMESTAMP},
+      #{now(),jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.renewable.gateway.pojo.InclinationRegister" >
     insert into inclination_register
@@ -111,6 +112,9 @@
       <if test="createTime != null" >
         create_time,
       </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -165,7 +169,10 @@
         #{initY,jdbcType=DOUBLE},
       </if>
       <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
+        #{now(),jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{now(),jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -223,6 +230,9 @@
       <if test="createTime != null" >
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
+      <if test="updateTime != null" >
+        update_time = #{now(),jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -244,7 +254,8 @@
       total_init_angle_limit = #{totalInitAngleLimit,jdbcType=DOUBLE},
       init_x = #{initX,jdbcType=DOUBLE},
       init_y = #{initY,jdbcType=DOUBLE},
-      create_time = #{createTime,jdbcType=TIMESTAMP}
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{now(),jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 

@@ -65,7 +65,7 @@ class SerialListener implements SerialPortEventListener {
                     if (serialPort == null) {
                         log.error("串口对象为空，监听失败");
                     } else {
-                        Thread.currentThread().sleep(20);   //其实20ms一般就可以确保数据接收完毕，但为了安全起见。之后这里可以增加一个方法，通过校验和来确定数据是否接收完毕，否则再等待5ms。（20ms意味着接受频率不可超过50hz）
+                        Thread.currentThread().sleep(50);   //其实20ms一般就可以确保数据接收完毕，但为了安全起见。之后这里可以增加一个方法，通过校验和来确定数据是否接收完毕，否则再等待5ms。（20ms意味着接受频率不可超过50hz）
                         data = SerialPortUtil.readFromPort(serialPort);
 
 
