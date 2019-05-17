@@ -1,4 +1,4 @@
-package com.renewable.gateway.rabbitmq.producer;
+package com.renewable.gateway.rabbitmq.pojo;
 
 import java.io.Serializable;
 import java.util.Date;

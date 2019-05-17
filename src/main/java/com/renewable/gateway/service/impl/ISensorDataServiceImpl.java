@@ -48,14 +48,6 @@ public class ISensorDataServiceImpl implements ISensorDataService {
             default:
                 return ServerResponse.createByErrorMessage("can't find the sensor of this sensor_type_identifier:" + sensor_identifier);
         }
-
-//        if (sensor_id == Const.SensorEnum.valueOf("Inclination1").getCode()){
-//            //如果日后同类型传感器数据统一。可以进行范围圈定
-//            return getInclinationDataList(pageNum,pageSize);
-//        }else {
-//            return ServerResponse.createByErrorMessage("can't find the sensor of this sensor_type_id:"+sensor_id);
-//        }
-
     }
 
 

@@ -12,13 +12,8 @@ import java.util.concurrent.TimeUnit;
  * @Author: jarry
  */
 @Slf4j
-
-
 //  由于guavacache不支持不同数据不同过期策略，故抛弃。引以为戒啊。
 public class GuavaCache {
-    //常见的与guavacache相关的前缀常量。并没有置于CONST中
-    public static final String CLEAN_TASK_PREFIX = "clean_";
-    public static final String DEAL_SET_PREFIX = "set_";
 
     //由于采用了lombok的@Slf4j的logback。所以必须要再次声明建立Logger
     //声明一个静态的内存块-guavacache

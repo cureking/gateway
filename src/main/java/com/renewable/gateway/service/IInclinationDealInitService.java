@@ -15,4 +15,7 @@ public interface IInclinationDealInitService {
     ServerResponse<PageInfo> getDataList(int pageNum, int pageSize, int sensor_identifier);
 
     ServerResponse<List<Object>> getDataListByTime(String startTime, String endTime, int sensor_identifier);
+
+    //对内    定时任务调用
+    ServerResponse uploadDataList();
 }

@@ -15,13 +15,6 @@ public class Const {
     public static final String NICKNAME = "nickname";
     public static final String SENSOR_REGISTER_PREFIX = "sensorRegister_";
 
-    /* RabbitMQ static constant name */
-    public static final String RABBITMQ_HOST = "rabbit.server.ip";
-    public static final String RABBITMQ_PORT = "rabbit.server.port";
-    public static final String RABBITMQ_USER_NAME = "rabbit.server.name";
-    public static final String RABBITMQ_USER_PASSWORD = "rabbit.server.password";
-    public static final String RABBITMQ_VIRTURAL_HOST = "rabbit.server.virtual-host";
-
     //传感器类型参数（即协议标识符）
     public interface SensorType {
         //注意要进行进制转换，后面可以写得优雅一下
@@ -29,6 +22,61 @@ public class Const {
         int Inclination1 = 104;
         int Inclination2 = 105;
     }
+
+
+
+    //传感器时间延迟
+    //此处的参数以秒为单位
+    public static final int MIN_PERIOD = 60;
+    public static final int HOUR_PERIOD = 60 * 60;
+    public static final int DAY_PERIOD = 60 * 60 * 24;
+
+
+    //缓存 redis 的相关前缀
+    public static final String CLEAN_TASK_PREFIX = "clean_";
+    public static final String DEAL_SET_PREFIX = "set_";
+
+    //缓存 redis 中传感器响应状态的保存时间（单位：秒）   传感器响应时间关联
+    public static final int DEAL_SET_KEEP = 5;  //该类数据使用频度不高，数据量也不大（因为一般采用自动传输模式）不需要太过严格
+    public static final int DEAL_SET_WAIT = 1;
+
+
+
+    //终端服务器状态
+    public enum TerminalStateEnum {
+
+
+        Running(0, "终端服务器正常运行中"),
+        Deleted(7, "终端服务器已删除");
+
+
+        private String value;
+        private Integer code;
+
+        TerminalStateEnum(int code, String value) {
+            this.code = code;
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public static TerminalStateEnum codeOf(int code) {
+            for (TerminalStateEnum dataCleanType : values()) {
+                if (dataCleanType.getCode() == code) {
+                    return dataCleanType;
+                }
+            }
+            log.warn("没有找到对应的枚举", code);
+            throw new RuntimeException("没有找到对应的枚举");    //这里由于是在java程序内，无页面响应。故将相关信息导入到日志中。这里抛出的异常由调用方处理
+        }
+    }
+
 
     //传感器类型
     public enum SensorEnum {
@@ -64,23 +112,6 @@ public class Const {
             throw new RuntimeException("没有找到对应的枚举");    //这里由于是在java程序内，无页面响应。故将相关信息导入到日志中。这里抛出的异常由调用方处理
         }
     }
-
-
-    //传感器时间延迟
-    //此处的参数以秒为单位
-    public static final int MIN_PERIOD = 60;
-    public static final int HOUR_PERIOD = 60 * 60;
-    public static final int DAY_PERIOD = 60 * 60 * 24;
-
-
-    //缓存 redis 的相关前缀
-    public static final String CLEAN_TASK_PREFIX = "clean_";
-    public static final String DEAL_SET_PREFIX = "set_";
-
-    //缓存 redis 中传感器响应状态的保存时间（单位：秒）   传感器响应时间关联
-    public static final int DEAL_SET_KEEP = 5;  //该类数据使用频度不高，数据量也不大（因为一般采用自动传输模式）不需要太过严格
-    public static final int DEAL_SET_WAIT = 1;
-
 
     //数据清洗类型
     public enum DataCleanType {

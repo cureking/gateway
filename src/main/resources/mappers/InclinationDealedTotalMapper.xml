@@ -188,6 +188,7 @@
     <include refid="Base_Column_List"/>
     from sensor_inclination_deal_total
     where version = #{version}
+    limit 5
   </select>
   <select id="selectListByTime" parameterType="map" resultMap="BaseResultMap">
     select
