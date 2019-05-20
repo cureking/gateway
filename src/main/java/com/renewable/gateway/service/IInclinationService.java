@@ -32,11 +32,11 @@ public interface IInclinationService {
     ServerResponse cleanDataTask(SensorRegister sensorRegister);
 
     //设置风机初始倾角测量的计算(算法一）
-    double[] initTotalAngleCal(double[][] initMeasureArray,double R);
+    double[] initTotalAngleCal(double[][] initMeasureArray, double R);
 
     //同上（Matlab版）
 //    Object[] initAngleTotalCalMatlab(double[][] initMeasureArray, double R);
 
     //设置计算包含初始值的总倾斜合倾角（算法三） //算法二原始版在OtherUtil
-    double[] calInitAngleTotal(double angleX, double angleY,double X,double Y, double angleInit, InclinationConst.InclinationInstallModeEnum installModeEnum);
+    double[] calInitAngleTotal(double angleX, double angleY, double X, double Y, double angleInit, InclinationConst.InclinationInstallModeEnum installModeEnum);
 }

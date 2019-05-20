@@ -91,7 +91,6 @@ public class InclinationConst {
         EIGHT(8, "安装模式八：水平x与垂直y：(-x,-y)");
 
 
-
         private int code;
         private String value;
         //TODO 视情形，将参数类型改为String.etc

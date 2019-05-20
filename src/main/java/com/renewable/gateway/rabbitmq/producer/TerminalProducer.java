@@ -1,15 +1,15 @@
 package com.renewable.gateway.rabbitmq.producer;
 
-import com.rabbitmq.client.*;
-import com.renewable.gateway.common.Const;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.MessageProperties;
 import com.renewable.gateway.pojo.Terminal;
 import com.renewable.gateway.util.JsonUtil;
-import com.renewable.gateway.util.NetIndentificationUtil;
 import com.renewable.gateway.util.PropertiesUtil;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.concurrent.TimeoutException;
 
 import static com.renewable.gateway.common.constant.RabbitmqConstant.*;
@@ -22,7 +22,7 @@ import static com.renewable.gateway.common.constant.RabbitmqConstant.*;
 public class TerminalProducer {
 
     private static final String IP_ADDRESS = PropertiesUtil.getProperty(RABBITMQ_HOST);
-    private static final int PORT  = Integer.parseInt(PropertiesUtil.getProperty(RABBITMQ_PORT));
+    private static final int PORT = Integer.parseInt(PropertiesUtil.getProperty(RABBITMQ_PORT));
     private static final String USER_NAME = PropertiesUtil.getProperty(RABBITMQ_USER_NAME);
     private static final String USER_PASSWORD = PropertiesUtil.getProperty(RABBITMQ_USER_PASSWORD);
 
@@ -54,37 +54,4 @@ public class TerminalProducer {
         channel.close();
         connection.close();
     }
-
-//    public static void main(String[] args) {
-//        try {
-//            sendTerminalConfig(terminalConfigGenerator());
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } catch (TimeoutException e) {
-//            e.printStackTrace();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//    private static Terminal terminalConfigGenerator(){
-//        Terminal terminal = new Terminal();
-//
-//        int randowId = (int)(Math.random()*Math.pow(10,7)*9+Math.pow(10,7));
-//        int projectId = 1;
-//        String ip = NetIndentificationUtil.getLocalIP();
-//        String mac = NetIndentificationUtil.getLocalMac();
-//        String name = "no namede";
-//        int state = Const.TerminalStateEnum.Running.getCode();
-//
-//        terminal.setId(randowId);
-//        terminal.setProjectId(projectId);
-//        terminal.setIp(ip);
-//        terminal.setMac(mac);
-//        terminal.setName(name);
-//        terminal.setState(state);
-//        terminal.setCreateTime(new Date());
-//        terminal.setUpdateTime(new Date());
-//
-//        return terminal;
-//    }
 }

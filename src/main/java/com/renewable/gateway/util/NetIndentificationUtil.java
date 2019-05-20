@@ -11,7 +11,7 @@ import java.net.UnknownHostException;
  */
 public class NetIndentificationUtil {
 
-    public static String getLocalIP(){
+    public static String getLocalIP() {
         String localIP = "";
         InetAddress addr = null;
         try {
@@ -39,16 +39,16 @@ public class NetIndentificationUtil {
             e.printStackTrace();
         }
         StringBuffer macString = new StringBuffer("");
-        for(int i=0; i<macArray.length; i++) {
-            if(i!=0) {
+        for (int i = 0; i < macArray.length; i++) {
+            if (i != 0) {
                 macString.append("-");
             }
             //字节转换为整数
-            int temp = macArray[i]&0xff;
+            int temp = macArray[i] & 0xff;
             String str = Integer.toHexString(temp);
-            if(str.length()==1) {
-                macString.append("0"+str);
-            }else {
+            if (str.length() == 1) {
+                macString.append("0" + str);
+            } else {
                 macString.append(str);
             }
         }

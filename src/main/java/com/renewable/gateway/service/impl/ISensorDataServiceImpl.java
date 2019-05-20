@@ -83,7 +83,7 @@ public class ISensorDataServiceImpl implements ISensorDataService {
             return ServerResponse.createByErrorMessage("the sensor registry on MySql is null");
         }
         for (SensorRegister sensorRegister : sensorRegisterList) {
-            System.out.println("ISensorDataServiceImpl/cleanDataTasks:sensorRegister:"+sensorRegister.toString());
+            System.out.println("ISensorDataServiceImpl/cleanDataTasks:sensorRegister:" + sensorRegister.toString());
             cleanDataTaskDispatch(sensorRegister);
         }
         return ServerResponse.createBySuccessMessage("数据清洗成功");

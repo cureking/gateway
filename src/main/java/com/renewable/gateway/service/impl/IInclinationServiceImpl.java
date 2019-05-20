@@ -3,31 +3,28 @@ package com.renewable.gateway.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import com.mathworks.toolbox.javabuilder.MWException;
-import com.mathworks.toolbox.javabuilder.MWNumericArray;
 import com.renewable.gateway.common.Const;
 import com.renewable.gateway.common.ServerResponse;
 import com.renewable.gateway.common.sensor.InclinationConst;
 import com.renewable.gateway.dao.InclinationMapper;
-
-
 import com.renewable.gateway.dao.InclinationRegisterMapper;
 import com.renewable.gateway.dao.SensorRegisterMapper;
-import com.renewable.gateway.pojo.*;
+import com.renewable.gateway.pojo.Inclination;
+import com.renewable.gateway.pojo.InclinationDealedTotal;
+import com.renewable.gateway.pojo.InclinationRegister;
+import com.renewable.gateway.pojo.SensorRegister;
 import com.renewable.gateway.serial.sensor.InclinationDeal526T;
 import com.renewable.gateway.service.IInclinationService;
 import com.renewable.gateway.service.IRegisteredInfoService;
 import com.renewable.gateway.util.DateTimeUtil;
-import com.renewable.gateway.util.MatlabUtil;
 import com.renewable.gateway.util.OtherUtil;
 import com.renewable.gateway.vo.InclinationVo;
-import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sinfit.Calcul;
 
-import java.math.BigDecimal;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 //import com.renewable.gateway.serialTemp.sensor.IInclinationDeal;
 
@@ -109,7 +106,7 @@ public class IInclinationServiceImpl implements IInclinationService {
     @Override
     public ServerResponse receiveData(String port, int baudrate, byte[] originBuffer) {
         //要对获得的name（即port进行一定处理.）
-        port = OtherUtil.getSubStrByCharAfter(port,'/');
+        port = OtherUtil.getSubStrByCharAfter(port, '/');
 
         ServerResponse<Inclination> serverResponse = InclinationDeal526T.origin2Object(originBuffer);
         if (!serverResponse.isSuccess()) {
@@ -123,26 +120,26 @@ public class IInclinationServiceImpl implements IInclinationService {
         inclination.setDirectAngle(resultTDArray[1]);
 
         //获取算法三所需参数（调用算法二matlab版）   //todo 其实这里应该是根据port与address的，但是 获取的数据还没有address。。当然上一层的数据是有的，只是没有传下来，之后有时间弄一下。
-        System.out.println("port:"+port+" baudrate:"+baudrate);
-        SensorRegister sensorRegister = sensorRegisterMapper.selectByPortAndAddress(port,"01");
+        System.out.println("port:" + port + " baudrate:" + baudrate);
+        SensorRegister sensorRegister = sensorRegisterMapper.selectByPortAndAddress(port, "01");
 
-        if (sensorRegister == null){
-            return ServerResponse.createByErrorMessage("sensorID:"+sensorRegister.getId());
+        if (sensorRegister == null) {
+            return ServerResponse.createByErrorMessage("sensorID:" + sensorRegister.getId());
         }
-        System.out.println("inclinationRegisterMapper:"+inclinationRegisterMapper);
+        System.out.println("inclinationRegisterMapper:" + inclinationRegisterMapper);
         InclinationRegister inclinationRegister = inclinationRegisterMapper.selectBySensorKey(sensorRegister.getId());
-        if (inclinationRegister == null){
+        if (inclinationRegister == null) {
             System.out.println("inclinationRegister 获取失败");
         }
 
         double R = inclinationRegister.getRadius();
         double[][] initMeasuerArray = OtherUtil.assembleMatlabArray(
-                inclinationRegister.getInitH1(),inclinationRegister.getInitH2(),inclinationRegister.getInitH3(),inclinationRegister.getInitH4(),
-                inclinationRegister.getInitAngle1(),inclinationRegister.getInitAngle2(),inclinationRegister.getInitAngle3(),inclinationRegister.getInitAngle4());
+                inclinationRegister.getInitH1(), inclinationRegister.getInitH2(), inclinationRegister.getInitH3(), inclinationRegister.getInitH4(),
+                inclinationRegister.getInitAngle1(), inclinationRegister.getInitAngle2(), inclinationRegister.getInitAngle3(), inclinationRegister.getInitAngle4());
 
 
         //开始算法三的计算          //InclinationConst.InclinationInstallModeEnum.FOUR
-        double[] resultTDInitArray = this.calInitAngleTotal(inclination.getAngleX(),inclination.getAngleY(),inclinationRegister.getInitX(),inclinationRegister.getInitY(),inclinationRegister.getInitTotalAngle(), InclinationConst.InclinationInstallModeEnum.codeOf(1));
+        double[] resultTDInitArray = this.calInitAngleTotal(inclination.getAngleX(), inclination.getAngleY(), inclinationRegister.getInitX(), inclinationRegister.getInitY(), inclinationRegister.getInitTotalAngle(), InclinationConst.InclinationInstallModeEnum.codeOf(1));
 
 
         //放入计算后，包含初始角度的合倾角，极其对应的方位角
@@ -166,7 +163,7 @@ public class IInclinationServiceImpl implements IInclinationService {
         if (angleX == 0 && angleY == 0) {    //这样的条件看起来较为更为清晰，即计算公式无法计算X=Y=0的情况。
             //可以不做处理
         } else {
-            angleTotal = OtherUtil.calAngleTotal(angleX, angleY,0,1);
+            angleTotal = OtherUtil.calAngleTotal(angleX, angleY, 0, 1);
         }
         return angleTotal;
     }
@@ -262,7 +259,7 @@ public class IInclinationServiceImpl implements IInclinationService {
 
         //2.每个周期要产生一个inclinationDeal
         for (int i = 0; i < periodCound; i++) {
-            System.out.println("IInclinationServiceImpl/cleanDatabyPeak: startTime:"+startTime+"  currentTime"+currentTime+"  duration:"+duration+" interval:"+interval+"  periodCound"+periodCound+"  i:"+i);
+            System.out.println("IInclinationServiceImpl/cleanDatabyPeak: startTime:" + startTime + "  currentTime" + currentTime + "  duration:" + duration + " interval:" + interval + "  periodCound" + periodCound + "  i:" + i);
             //a.计算每个周期的开始时间与结束时间
             long cycleStartTime = startTime + interval * i;
             long cycleEndTime = startTime + interval * (i + 1);
@@ -274,7 +271,7 @@ public class IInclinationServiceImpl implements IInclinationService {
 //                return ServerResponse.createByErrorMessage("获取峰值失败:" + sensorRegister.toString());
                 continue;
             }
-            System.out.println("IInclinationServiceImpl/cleanDatabyPeak: startTime:"+ cycleStartTime+"  endTime:"+cycleEndTime+"  start2String"+ new Date(cycleStartTime)+"  peakInclinationId:"+peakInclination.getId());
+            System.out.println("IInclinationServiceImpl/cleanDatabyPeak: startTime:" + cycleStartTime + "  endTime:" + cycleEndTime + "  start2String" + new Date(cycleStartTime) + "  peakInclinationId:" + peakInclination.getId());
             //c.对峰值进行封装 日后便于扩展
             InclinationDealedTotal inclinationDealedTotal = new InclinationDealedTotal();
             inclinationDealedTotal = inclinationDealAssemble(peakInclination);
@@ -414,9 +411,8 @@ public class IInclinationServiceImpl implements IInclinationService {
     }
 
 
-
-    public double[] calInitAngleTotal(double angleX, double angleY,double X,double Y, double angleInitTotal, InclinationConst.InclinationInstallModeEnum installModeEnum) {
-        return OtherUtil.calInitAngleTotal(angleX, angleY, X,Y,angleInitTotal, installModeEnum);
+    public double[] calInitAngleTotal(double angleX, double angleY, double X, double Y, double angleInitTotal, InclinationConst.InclinationInstallModeEnum installModeEnum) {
+        return OtherUtil.calInitAngleTotal(angleX, angleY, X, Y, angleInitTotal, installModeEnum);
 
     }
 

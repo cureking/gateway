@@ -2,7 +2,6 @@ package com.renewable.gateway.taskDemo;
 
 import com.renewable.gateway.common.ServerResponse;
 import com.renewable.gateway.common.sensor.InclinationConst;
-
 import com.renewable.gateway.rabbitmq.producer.InclinationProducer;
 import com.renewable.gateway.serial.SerialPool;
 import com.renewable.gateway.serial.sensor.InclinationDeal526T;
@@ -46,7 +45,7 @@ public class simpleTimer {
     /**
      * 用于实现轮询获取传感器监测数据
      */
-    @Scheduled(cron = "*/5 * * * * *")  //每五秒钟    //数据读取  //暂停，以便进行Terminal的调试工作
+//    @Scheduled(cron = "*/5 * * * * *")  //每五秒钟    //数据读取  //暂停，以便进行Terminal的调试工作
     public void requireSerialData() {
         log.info("请求监测数据定时任务启动");
 
@@ -77,13 +76,11 @@ public class simpleTimer {
     }
 
 
-
-
-    @Scheduled(cron = "* */1 * * * *")  // 1分钟      //暂停，以便进行Terminal的调试工作
-    public void testRabbitMQIntegrateService(){
+    @Scheduled(cron = "*/20 * * * * *") // 1分钟      //暂停，以便进行Terminal的调试工作
+    public void testRabbitMQIntegrateService() {
         System.out.println("rabbitMq test start！");
 
-        iInclinationDealTotalService.uploadDataList();
+//        iInclinationDealTotalService.uploadDataList();
         iInclinationDealInitService.uploadDataList();
 
         System.out.println("rabbitMq test end");

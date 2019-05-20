@@ -69,7 +69,6 @@ class SerialListener implements SerialPortEventListener {
                         data = SerialPortUtil.readFromPort(serialPort);
 
 
-
                         //todo 这里可以提取一个模块，用于做数据的沾包，分包处理
                         if (data == null) {
                             break;

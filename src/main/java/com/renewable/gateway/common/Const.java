@@ -24,7 +24,6 @@ public class Const {
     }
 
 
-
     //传感器时间延迟
     //此处的参数以秒为单位
     public static final int MIN_PERIOD = 60;
@@ -39,7 +38,6 @@ public class Const {
     //缓存 redis 中传感器响应状态的保存时间（单位：秒）   传感器响应时间关联
     public static final int DEAL_SET_KEEP = 5;  //该类数据使用频度不高，数据量也不大（因为一般采用自动传输模式）不需要太过严格
     public static final int DEAL_SET_WAIT = 1;
-
 
 
     //终端服务器状态

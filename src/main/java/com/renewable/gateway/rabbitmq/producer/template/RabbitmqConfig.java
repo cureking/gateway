@@ -2,10 +2,6 @@ package com.renewable.gateway.rabbitmq.producer.template;
 
 
 import com.renewable.gateway.util.PropertiesUtil;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
@@ -13,8 +9,6 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-
-import static com.renewable.gateway.common.Const.*;
 
 /**
  * @Description：
@@ -25,7 +19,7 @@ import static com.renewable.gateway.common.Const.*;
 public class RabbitmqConfig {
     //    注入连接工厂，spring的配置，springboot可以配置在属性文件中
     @Bean
-    public ConnectionFactory connectionFactory(){
+    public ConnectionFactory connectionFactory() {
         CachingConnectionFactory connection = new CachingConnectionFactory();
         connection.setHost(PropertiesUtil.getProperty(RABBITMQ_HOST));
         connection.setPort(Integer.parseInt(PropertiesUtil.getProperty(RABBITMQ_PORT)));
@@ -37,7 +31,7 @@ public class RabbitmqConfig {
 
     //    配置RabbitAdmin来管理rabbit
     @Bean
-    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory){
+    public RabbitAdmin rabbitAdmin(ConnectionFactory connectionFactory) {
         RabbitAdmin rabbitAdmin = new RabbitAdmin(connectionFactory);
         //用RabbitAdmin一定要配置这个，spring加载的是后就会加载这个类================特别重要
         rabbitAdmin.setAutoStartup(true);
@@ -60,7 +54,7 @@ public class RabbitmqConfig {
 //    }
 
     @Bean
-   public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         return rabbitTemplate;
     }

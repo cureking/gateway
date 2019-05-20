@@ -2,7 +2,6 @@ package com.renewable.gateway.controller.portal;
 
 import com.github.pagehelper.PageInfo;
 import com.renewable.gateway.common.ServerResponse;
-import com.renewable.gateway.pojo.InclinationDealedTotal;
 import com.renewable.gateway.service.IInclinationDealTotalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

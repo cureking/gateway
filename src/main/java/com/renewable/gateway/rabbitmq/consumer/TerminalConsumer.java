@@ -6,18 +6,11 @@ import com.renewable.gateway.pojo.Terminal;
 import com.renewable.gateway.service.ITerminalService;
 import com.renewable.gateway.util.JsonUtil;
 import com.renewable.gateway.util.PropertiesUtil;
-import com.sun.org.apache.bcel.internal.generic.FADD;
-import org.springframework.amqp.rabbit.annotation.*;
-import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.Headers;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import static com.renewable.gateway.common.constant.RabbitmqConstant.*;
@@ -37,27 +30,9 @@ public class TerminalConsumer {
     private static final String TERMINAL_CONFIG_CENTCONTROL2TERMINAL_ROUTINETYPE = "topic";
     private static final String TERMINAL_CONFIG_CENTCONTROL2TERMINAL_BINDINGKEY = "terminal.config.centcontrol2terminal";
 
-//    @RabbitListener(bindings = @QueueBinding(
-//            value = @Queue(value = TERMINAL_CONFIG_CENTCONTROL2TERMINAL_QUEUE, declare = "true"),
-//            exchange = @Exchange(value = TERMINAL_CONFIG_CENTCONTROL2TERMINAL_EXCHANGE, declare = "true", type = TERMINAL_CONFIG_CENTCONTROL2TERMINAL_ROUTINETYPE),
-//            key = TERMINAL_CONFIG_CENTCONTROL2TERMINAL_BINDINGKEY
-//    ))
-//    @RabbitHandler
-//    public void messageOnTerminal(@Payload Terminal terminal, @Headers Map<String,Object> headers, Channel channel)throws IOException {
-//
-//        // 2.业务逻辑
-//        ServerResponse response = iTerminalService.getTerminalFromRabbitmq(terminal);
-//        System.out.println("updated terminal config: "+JsonUtil.obj2String(terminal));
-//
-//        // 3.确认
-//        if (response.isSuccess()){
-//            Long deliveryTag = (Long)headers.get(AmqpHeaders.DELIVERY_TAG);
-//            channel.basicAck(deliveryTag,false);
-//        }
-//    }
-
-    public static void messageOnTerminal() throws IOException, TimeoutException, InterruptedException {
-        Address[] addresses =new Address[]{
+    @PostConstruct
+    public void messageOnTerminal() throws IOException, TimeoutException, InterruptedException {
+        Address[] addresses = new Address[]{
                 new Address(PropertiesUtil.getProperty(RABBITMQ_HOST))
         };
         ConnectionFactory factory = new ConnectionFactory();
@@ -67,43 +42,27 @@ public class TerminalConsumer {
         Connection connection = factory.newConnection(addresses);
         final Channel channel = connection.createChannel();
         channel.basicQos(64);   // 设置客户端最多接收未ack的消息个数，避免客户端被冲垮（常用于限流）
-        Consumer consumer = new DefaultConsumer(channel){
+        Consumer consumer = new DefaultConsumer(channel) {
+
+
             @Override
             public void handleDelivery(String consumerTag,
                                        Envelope envelope,
                                        AMQP.BasicProperties properties,
                                        byte[] body) throws IOException {
-                System.out.println("recv message: "+new String(body));
+                // 业务代码
+                System.out.println("recv terminalConfig message: " + new String(body));
+                ServerResponse response = iTerminalService.getTerminalFromRabbitmq(JsonUtil.string2Obj(new String(body), Terminal.class));
+                // 重启之后，就解决问题了。 果然是重启大法好啊。  // 然后又出问题了。。。不过目前找到问题的根源是因为双方content-type设置的问题  // 终于解决了。确实是上述问题造成的。不过在那儿之后又引出了@Payload的问题，不过也解决了。但是对原理还是不够了解，只是从应用角度解决（碰巧，这种解决方案不算太难看）
 
-//                ServerResponse response = iTerminalService.getTerminalFromRabbitmq(JsonUtil.string2Obj(new String(body),Terminal.class));
-//                System.out.println(JsonUtil.string2Obj(new String(body),Terminal.class).getId());
-                System.out.println("updated terminal config: "+ Arrays.toString(body));
-
-                try{
-                    TimeUnit.SECONDS.sleep(1);
-                }catch (InterruptedException e){
-                    e.printStackTrace();
-                }
                 channel.basicAck(envelope.getDeliveryTag(), false);
             }
         };
-        channel.basicConsume(TERMINAL_CONFIG_CENTCONTROL2TERMINAL_QUEUE,consumer);
+        channel.basicConsume(TERMINAL_CONFIG_CENTCONTROL2TERMINAL_QUEUE, consumer);
         // 等回调函数执行完毕后，关闭资源
-        TimeUnit.SECONDS.sleep(5);
-        channel.close();
-        connection.close();
-    }
-
-    public static void main(String[] args) {
-
-        try {
-            messageOnTerminal();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        // 想了想还是不关闭资源，保持一个监听的状态，从而确保配置的实时更新
+//        TimeUnit.SECONDS.sleep(5);
+//        channel.close();
+//        connection.close();
     }
 }

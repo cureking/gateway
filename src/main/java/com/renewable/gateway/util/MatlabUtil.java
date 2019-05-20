@@ -12,12 +12,11 @@ import java.util.Arrays;
 public class MatlabUtil {
 
     /**
-     *
      * @param initMeasureArray
      * @param R
-     * @return  返回的数组，包含四个参数，分别是合倾角，方向角，X，Y。
+     * @return 返回的数组，包含四个参数，分别是合倾角，方向角，X，Y。
      */
-    public static Object[] initAngleTotalCalMatlab(double[][] initMeasureArray, double R){
+    public static Object[] initAngleTotalCalMatlab(double[][] initMeasureArray, double R) {
         Calcul calcul = null;
         try {
             calcul = new Calcul();
@@ -25,9 +24,9 @@ public class MatlabUtil {
             e.printStackTrace();
         }
         Object[] resultObjectArray = null;
-        Object object=null;
+        Object object = null;
         try {
-            resultObjectArray = calcul.sinfit(4,initMeasureArray[0][0],initMeasureArray[0][1],initMeasureArray[0][0],initMeasureArray[0][1],initMeasureArray[0][0],initMeasureArray[0][1],initMeasureArray[0][0],initMeasureArray[0][1],R);
+            resultObjectArray = calcul.sinfit(4, initMeasureArray[0][0], initMeasureArray[0][1], initMeasureArray[0][0], initMeasureArray[0][1], initMeasureArray[0][0], initMeasureArray[0][1], initMeasureArray[0][0], initMeasureArray[0][1], R);
             System.out.println(Arrays.toString(resultObjectArray));
         } catch (MWException e) {
             e.printStackTrace();

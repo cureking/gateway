@@ -146,6 +146,9 @@
   <update id="updateByMac" parameterType="com.renewable.gateway.pojo.Terminal">
     update terminal
     <set >
+      <if test="id != null">
+        id = #{id,jdbcType=INTEGER},
+      </if>
       <if test="projectId != null" >
         project_id = #{projectId,jdbcType=INTEGER},
       </if>

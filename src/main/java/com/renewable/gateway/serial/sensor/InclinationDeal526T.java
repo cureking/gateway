@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.renewable.gateway.util.OtherUtil.bcdArray2HexArray;
 import static com.renewable.gateway.util.OtherUtil.bcdArray2intArray;
 
 /**
@@ -86,7 +85,7 @@ public class InclinationDeal526T {
         return ServerResponse.createBySuccess("the command2Origin is OK.", originData);
     }
 
-    public static  ServerResponse<byte[]> command2Origin(int address, InclinationConst.InclinationSensor1Enum inclinationSensor1Enum, String data) {
+    public static ServerResponse<byte[]> command2Origin(int address, InclinationConst.InclinationSensor1Enum inclinationSensor1Enum, String data) {
         byte[] originData;
 
         if (inclinationSensor1Enum == null) {
@@ -126,7 +125,7 @@ public class InclinationDeal526T {
         inclination.setAngleY(origin_Y);
         inclination.setTemperature(origin_T);
         //该数据的create_time由mybatis的mapper中now()函数控制
-        System.out.println("origin_X:" + origin_X+" sub:"+Arrays.toString(OtherUtil.subBytes(originData, 4, 3)));
+        System.out.println("origin_X:" + origin_X + " sub:" + Arrays.toString(OtherUtil.subBytes(originData, 4, 3)));
         System.out.println("origin_Y:" + origin_Y);
         System.out.println("origin_T:" + origin_T);
         return inclination;
@@ -296,8 +295,8 @@ public class InclinationDeal526T {
 
 //        byte[] test3 = {104, 13, 0, -124, -16, 0, -87, 16, 37, -106, 3, 25, 37, 4};
 ////        origin2Object(test3);
-        byte[] test4 = {17,1,54};
-        byte[] test5 ={3,1,72};
+        byte[] test4 = {17, 1, 54};
+        byte[] test5 = {3, 1, 72};
         System.out.println(origin2Double(test4));
         System.out.println(origin2Double(test5));
 

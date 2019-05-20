@@ -163,7 +163,7 @@ public class HexUtil {
     public static int bcd2int(byte[] bytes) {
         String hexString = byte2string(bytes);
 
-        hexString = hexString.replace("-","");  //去除负数影响，避免由传感器发送的signed数据造成的错误。    //todo 这样做的结果就是数据必然存在负数导致的错误，后期要么让硬件不要发送无意义的signed数据，要么在前面处理负数。
+        hexString = hexString.replace("-", "");  //去除负数影响，避免由传感器发送的signed数据造成的错误。    //todo 这样做的结果就是数据必然存在负数导致的错误，后期要么让硬件不要发送无意义的signed数据，要么在前面处理负数。
 
 //        System.out.println("HexString:"+hexString);
         int result = 0;

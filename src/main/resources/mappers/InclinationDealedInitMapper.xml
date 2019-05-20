@@ -183,12 +183,12 @@
     from sensor_inclination_deal_init
     where sensor_id = #{sensor_identifier}
   </select>
-  <select id="selectListByVersion" resultMap="BaseResultMap">
+  <select id="selectListByVersionAndLimit" parameterType="map" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List"/>
     from sensor_inclination_deal_init
     where version = #{version}
-    limit 5
+    limit #{limit}
   </select>
   <select id="selectListByTime" parameterType="map" resultMap="BaseResultMap">
     select
@@ -200,4 +200,11 @@
     and create_time &gt;=#{startTime}
     and sensor_id = #{sensor_identifier}
   </select>
+  <update id="updateVersionByIdAndVersion" parameterType="list">
+    <foreach collection="idList" separator="," item="item" index="index">
+      update sensor_inclination_deal_init
+      set version = #{version}
+      where id = #{item}
+    </foreach>
+  </update>
 </mapper>

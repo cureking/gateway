@@ -5,15 +5,12 @@ import com.renewable.gateway.common.ServerResponse;
 import com.renewable.gateway.dao.SensorRegisterMapper;
 import com.renewable.gateway.pojo.SensorRegister;
 import com.renewable.gateway.service.IRegisteredInfoService;
-import com.renewable.gateway.util.OtherUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.lang.reflect.Array;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Description：

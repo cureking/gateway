@@ -1,15 +1,10 @@
 package com.renewable.gateway.rabbitmq.producer.template;
 
-import com.rabbitmq.client.*;
 import com.renewable.gateway.pojo.InclinationDealedTotal;
 import com.renewable.gateway.rabbitmq.producer.InclinationTotal;
-import org.springframework.amqp.rabbit.connection.CorrelationData;
-import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
 
 /**
  * @Description：
@@ -28,7 +23,7 @@ public class InclinationSender {
     private static final String INCLINATION_TOTAL_ROUTINGKEY = "sensor.inclination.data.total";
 
 
-    public void send(InclinationTotal inclinationTotal) throws Exception{
+    public void send(InclinationTotal inclinationTotal) throws Exception {
 //        CorrelationData correlationData = new CorrelationData();  //会出现future相关的NoClassDefFoundError的异常。表示内心极度崩溃，怎么又是这种级别的异常啊。  // java.lang.NoClassDefFoundError: org/springframework/util/concurrent/SettableListenableFuture
 //        correlationData.setId(inclinationTotal.getId().toString());  //消息的唯一标识ID
 
@@ -39,7 +34,7 @@ public class InclinationSender {
     }
 
 
-    public static InclinationTotal inclinationTotalAssemble(InclinationDealedTotal inclinationDealedTotal){
+    public static InclinationTotal inclinationTotalAssemble(InclinationDealedTotal inclinationDealedTotal) {
         InclinationTotal inclinationTotal = new InclinationTotal();
         inclinationTotal.setId(inclinationDealedTotal.getId());
         inclinationTotal.setOriginId(inclinationDealedTotal.getOriginId());
