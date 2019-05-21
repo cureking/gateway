@@ -3,12 +3,15 @@ package com.renewable.gateway.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.renewable.gateway.common.GuavaCache;
 import com.renewable.gateway.common.ServerResponse;
+import com.renewable.gateway.common.constant.InclinationConstant;
 import com.renewable.gateway.dao.InclinationDealedTotalMapper;
 import com.renewable.gateway.pojo.InclinationDealedTotal;
 import com.renewable.gateway.rabbitmq.pojo.InclinationTotal;
 import com.renewable.gateway.rabbitmq.producer.InclinationProducer;
 import com.renewable.gateway.service.IInclinationDealTotalService;
+import com.renewable.gateway.service.ITerminalService;
 import com.renewable.gateway.util.DateTimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
+
+import static com.renewable.gateway.common.constant.CacheConstant.TERMINAL_ID;
 
 /**
  * @Description：
@@ -31,6 +36,9 @@ public class IInclinationDealTotalServiceImpl implements IInclinationDealTotalSe
 
     @Autowired
     private InclinationProducer inclinationProducer;
+
+    @Autowired
+    private ITerminalService iTerminalService;
 
 
     @Override
@@ -77,21 +85,16 @@ public class IInclinationDealTotalServiceImpl implements IInclinationDealTotalSe
         return ServerResponse.createBySuccess(inclinationVoObjectList);
     }
 
-    /**
-     * 进行数据的上传
-     *
-     * @return
-     */
     @Override
     public ServerResponse uploadDataList() {
-        List<InclinationDealedTotal> inclinationDealedTotalList = inclinationDealedTotalMapper.selectListByVersion("Cleaned");  //这里以后要集成的Const文件中，另外相关数据字段，应该改为数字（节省带宽，降低出错可能性（写代码））
+        List<InclinationDealedTotal> inclinationDealedTotalList = inclinationDealedTotalMapper.selectListByVersionAndLimit(InclinationConstant.VERSION_CLEANED,50);  //这里以后要集成的Const文件中，另外相关数据字段，应该改为数字（节省带宽，降低出错可能性（写代码））
         if (inclinationDealedTotalList == null) {
             return ServerResponse.createByErrorMessage("can't get targeted data from db");
         }
 
-        // 之后如果实在无法通过一个SQL语句实现（不打算使用存储过程，因为之后终端服务器的部署是很多的。  那就在这里执行相关update语句，根据获取的数据的主键ID，来更新数据表相关记录的状态
 
-        List<InclinationTotal> inclinationTotalList = this.inclinationDealedTotalList2InclinationTotalList(inclinationDealedTotalList).getData();         //这种转换放在该服务层，还是MQ的调用层，我觉得应该放在这里，但是InclinationTotal又该放在哪里呢？想想，还是将转换放在放在这里，pojo放在Vo或者BO，又或者rabbitmq下。
+        List<InclinationDealedTotal> uploadedInclinationDealedTotalList = this.listUploadedVersionFromInclinationDealedTotalList(inclinationDealedTotalList);   //更新状态
+        List<InclinationTotal> inclinationTotalList = this.inclinationDealedTotalList2InclinationTotalList(uploadedInclinationDealedTotalList).getData();         //这种转换放在该服务层，还是MQ的调用层，我觉得应该放在这里，但是InclinationTotal又该放在哪里呢？想想，还是将转换放在放在这里，pojo放在Vo或者BO，又或者rabbitmq下。
 
         // 正确的做法，这里需要进行事务级的控制，确保数据在这里不会因为MQ发送失败，造成数据丢失（RabbitMQ也有自己消息的事务控制，可以了解）
         try {
@@ -105,6 +108,12 @@ public class IInclinationDealTotalServiceImpl implements IInclinationDealTotalSe
         } catch (InterruptedException e) {
             log.info("InterruptedException:" + e);
             return ServerResponse.createByErrorMessage("Inclination data try send to MQ but fail !");
+        }
+
+        // 当上述操作没有出现问题，这里可以将之前的那些数据在数据库的状态修改
+        int countRow = inclinationDealedTotalMapper.updateBatch(uploadedInclinationDealedTotalList);
+        if (countRow == 0){
+            return ServerResponse.createByErrorMessage("Inclinations update fail !");
         }
 
         return ServerResponse.createBySuccessMessage("Inclination data sended to MQ !");
@@ -140,10 +149,24 @@ public class IInclinationDealTotalServiceImpl implements IInclinationDealTotalSe
         inclinationTotal.setVersion(inclinationDealedTotal.getVersion());
         inclinationTotal.setCreateTime(inclinationDealedTotal.getCreateTime());
 
-        inclinationTotal.setTerminalId(1);      //建立配置，模块时，这里需要将终端地址改为配置中得ID    // 配置会存在数据库与缓存两个部分，但由于空间上存在三个分布，而时间上分布不明确，故需要注意一致性问题。基于业务特点，建议最终一致性，或用户一致性。
-
+        String idStr = GuavaCache.getKey(TERMINAL_ID);
+        if (idStr == null) {
+            // 更新配置
+            iTerminalService.refreshConfigFromCent();
+            idStr = GuavaCache.getKey(TERMINAL_ID);
+        }
+        inclinationTotal.setTerminalId(Integer.parseInt(idStr));
 
         return inclinationTotal;
+    }
+
+    private List<InclinationDealedTotal> listUploadedVersionFromInclinationDealedTotalList(List<InclinationDealedTotal> inclinationDealedTotalList){
+        if (inclinationDealedTotalList == null){ return null; }
+
+        for (InclinationDealedTotal inclinationDealedTotal : inclinationDealedTotalList) {
+            inclinationDealedTotal.setVersion(InclinationConstant.VERSION_UPLOADED);
+        }
+        return inclinationDealedTotalList;
     }
 
 }

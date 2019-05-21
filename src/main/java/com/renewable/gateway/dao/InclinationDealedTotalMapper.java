@@ -22,7 +22,9 @@ public interface InclinationDealedTotalMapper {
     //custom
     List<InclinationDealedTotal> selectList(int sensor_identifier);
 
-    List<InclinationDealedTotal> selectListByVersion(String version);
+    List<InclinationDealedTotal> selectListByVersionAndLimit(@Param("version")String version, @Param("limit") int limit);
 
     List<InclinationDealedTotal> selectListByTime(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("sensor_identifier") int sensor_identifier);
+
+    int updateBatch(@Param(value = "inclinationDealedTotalList")List<InclinationDealedTotal> inclinationDealedTotalList);
 }

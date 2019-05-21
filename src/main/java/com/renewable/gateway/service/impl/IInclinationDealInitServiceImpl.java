@@ -13,6 +13,7 @@ import com.renewable.gateway.rabbitmq.pojo.InclinationInit;
 import com.renewable.gateway.rabbitmq.producer.InclinationProducer;
 import com.renewable.gateway.service.IInclinationDealInitService;
 import com.renewable.gateway.util.DateTimeUtil;
+import com.renewable.gateway.util.JsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -89,12 +90,13 @@ public class IInclinationDealInitServiceImpl implements IInclinationDealInitServ
     @Override
     public ServerResponse uploadDataList() {
         List<InclinationDealedInit> inclinationDealedInitList = inclinationDealedInitMapper.selectListByVersionAndLimit(InclinationConstant.VERSION_CLEANED,50);  //这里以后要集成的Const文件中，另外相关数据字段，应该改为数字（节省带宽，降低出错可能性（写代码））
-
         if (inclinationDealedInitList == null) {
             return ServerResponse.createByErrorMessage("can't get targeted data from db");
         }
 
-        List<InclinationInit> inclinationInitList = this.inclinationDealedTotalList2InclinationTotalList(inclinationDealedInitList).getData();         //这种转换放在该服务层，还是MQ的调用层，我觉得应该放在这里，但是InclinationTotal又该放在哪里呢？想想，还是将转换放在放在这里，pojo放在Vo或者BO，又或者rabbitmq下。
+
+        List<InclinationDealedInit> uploadedInclinationDealedInitList = this.listUploadedVersionFromInclinationDealedInitList(inclinationDealedInitList);   //更新状态
+        List<InclinationInit> inclinationInitList = this.inclinationDealedInitList2InclinationInitList(uploadedInclinationDealedInitList).getData();         //这种转换放在该服务层，还是MQ的调用层，我觉得应该放在这里，但是InclinationTotal又该放在哪里呢？想想，还是将转换放在放在这里，pojo放在Vo或者BO，又或者rabbitmq下。
 
         // 正确的做法，这里需要进行事务级的控制，确保数据在这里不会因为MQ发送失败，造成数据丢失（RabbitMQ也有自己消息的事务控制，可以了解）
         try {
@@ -111,12 +113,15 @@ public class IInclinationDealInitServiceImpl implements IInclinationDealInitServ
         }
 
         // 当上述操作没有出现问题，这里可以将之前的那些数据在数据库的状态修改
-        List<Long> idList = this.listIdFromInclinationList(inclinationDealedInitList);
-        int countRow = inclinationDealedInitMapper.updateVersionByIdAndVersion(idList,InclinationConstant.VERSION_UPLOADED);
+        int countRow = inclinationDealedInitMapper.updateBatch(uploadedInclinationDealedInitList);
+        if (countRow == 0){
+            return ServerResponse.createByErrorMessage("Inclinations update fail !");
+        }
+
         return ServerResponse.createBySuccessMessage("Inclination data sended to MQ !");
     }
 
-    private ServerResponse<List<InclinationInit>> inclinationDealedTotalList2InclinationTotalList(List<InclinationDealedInit> inclinationDealedInitList) {
+    private ServerResponse<List<InclinationInit>> inclinationDealedInitList2InclinationInitList(List<InclinationDealedInit> inclinationDealedInitList) {
         if (inclinationDealedInitList == null) {
             return null;
         }
@@ -153,22 +158,19 @@ public class IInclinationDealInitServiceImpl implements IInclinationDealInitServ
             iTerminalService.refreshConfigFromCent();
             idStr = GuavaCache.getKey(TERMINAL_ID); // 由于网络传输等的耗时，此时的缓存只会是原始配置，所以一方面可以选择等待（但是离线时间可能较久）。另一方方面，就先传输数据，只能说前几个数据可能会存在问题
         }
-        inclinationDealedInit.setId(Long.parseLong(idStr));
+        inclinationInit.setTerminalId(Integer.parseInt(idStr));
 
         return inclinationInit;
     }
 
-    private List<Long> listIdFromInclinationList(List<InclinationDealedInit> inclinationDealedInitList){
-        if (inclinationDealedInitList == null){
-            return null;
-        }
+    private List<InclinationDealedInit> listUploadedVersionFromInclinationDealedInitList(List<InclinationDealedInit> inclinationDealedInitList){
+        if (inclinationDealedInitList == null){ return null; }
 
-        List<Long> idList = Lists.newArrayList();
         for (InclinationDealedInit inclinationDealedInit : inclinationDealedInitList) {
-            long id = inclinationDealedInit.getId();
-            idList.add(id);
+            inclinationDealedInit.setVersion(InclinationConstant.VERSION_UPLOADED);
         }
-        return idList;
+        return inclinationDealedInitList;
     }
+
 
 }

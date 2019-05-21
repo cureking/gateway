@@ -200,11 +200,12 @@
     and create_time &gt;=#{startTime}
     and sensor_id = #{sensor_identifier}
   </select>
-  <update id="updateVersionByIdAndVersion" parameterType="list">
-    <foreach collection="idList" separator="," item="item" index="index">
-      update sensor_inclination_deal_init
-      set version = #{version}
-      where id = #{item}
+  <update id="updateBatch" parameterType="list">
+    update sensor_inclination_deal_init
+    set  version = "Uploaded"
+    where id in
+    <foreach collection="inclinationDealedInitList" index="index" item="item" separator="," open="(" close=")">
+      #{item.id,jdbcType=BIGINT}
     </foreach>
   </update>
 </mapper>

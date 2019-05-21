@@ -26,5 +26,5 @@ public interface InclinationDealedInitMapper {
 
     List<InclinationDealedInit> selectListByTime(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("sensor_identifier") int sensor_identifier);
 
-    int updateVersionByIdAndVersion(@Param(value = "idList")List<Long> idList,@Param(value = "version")String version);
+    int updateBatch(@Param(value = "inclinationDealedInitList")List<InclinationDealedInit> inclinationDealedInitList);
 }

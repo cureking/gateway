@@ -51,7 +51,6 @@ public class TerminalConsumer {
                                        AMQP.BasicProperties properties,
                                        byte[] body) throws IOException {
                 // 业务代码
-                System.out.println("recv terminalConfig message: " + new String(body));
                 ServerResponse response = iTerminalService.getTerminalFromRabbitmq(JsonUtil.string2Obj(new String(body), Terminal.class));
                 // 重启之后，就解决问题了。 果然是重启大法好啊。  // 然后又出问题了。。。不过目前找到问题的根源是因为双方content-type设置的问题  // 终于解决了。确实是上述问题造成的。不过在那儿之后又引出了@Payload的问题，不过也解决了。但是对原理还是不够了解，只是从应用角度解决（碰巧，这种解决方案不算太难看）
 

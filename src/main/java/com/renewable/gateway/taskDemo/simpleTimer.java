@@ -77,12 +77,12 @@ public class simpleTimer {
 
 
     @Scheduled(cron = "*/20 * * * * *") // 1分钟      //暂停，以便进行Terminal的调试工作
-    public void testRabbitMQIntegrateService() {
-        System.out.println("rabbitMq test start！");
+    public void RabbitMQAndInclinationIntegrateService() {
+        System.out.println("RabbitMQAndInclinationIntegrateService start！");
 
-//        iInclinationDealTotalService.uploadDataList();
+        iInclinationDealTotalService.uploadDataList();
         iInclinationDealInitService.uploadDataList();
 
-        System.out.println("rabbitMq test end");
+        System.out.println("RabbitMQAndInclinationIntegrateService end");
     }
 }
