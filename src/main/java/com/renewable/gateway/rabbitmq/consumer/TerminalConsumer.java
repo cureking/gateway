@@ -1,6 +1,7 @@
 package com.renewable.gateway.rabbitmq.consumer;
 
 import com.rabbitmq.client.*;
+import com.renewable.gateway.common.GuavaCache;
 import com.renewable.gateway.common.ServerResponse;
 import com.renewable.gateway.pojo.Terminal;
 import com.renewable.gateway.service.ITerminalService;
@@ -13,6 +14,8 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
+import static com.renewable.gateway.common.constant.CacheConstant.TERMINAL_IP;
+import static com.renewable.gateway.common.constant.CacheConstant.TERMINAL_MAC;
 import static com.renewable.gateway.common.constant.RabbitmqConstant.*;
 
 /**
@@ -50,11 +53,17 @@ public class TerminalConsumer {
                                        Envelope envelope,
                                        AMQP.BasicProperties properties,
                                        byte[] body) throws IOException {
-                // 业务代码
-                ServerResponse response = iTerminalService.getTerminalFromRabbitmq(JsonUtil.string2Obj(new String(body), Terminal.class));
-                // 重启之后，就解决问题了。 果然是重启大法好啊。  // 然后又出问题了。。。不过目前找到问题的根源是因为双方content-type设置的问题  // 终于解决了。确实是上述问题造成的。不过在那儿之后又引出了@Payload的问题，不过也解决了。但是对原理还是不够了解，只是从应用角度解决（碰巧，这种解决方案不算太难看）
+                // 1.接收数据，并反序列化出对象
+                Terminal receiveTerminalConfig = JsonUtil.string2Obj(new String(body), Terminal.class);
 
-                channel.basicAck(envelope.getDeliveryTag(), false);
+                // 2.验证是否是该终端的消息的消息     // 避免ACK其他终端的消息
+                if (receiveTerminalConfig.getMac() == GuavaCache.getKey(TERMINAL_MAC)){
+                    // 业务代码
+                    ServerResponse response = iTerminalService.getTerminalFromRabbitmq(receiveTerminalConfig);
+                    // 重启之后，就解决问题了。 果然是重启大法好啊。  // 然后又出问题了。。。不过目前找到问题的根源是因为双方content-type设置的问题  // 终于解决了。确实是上述问题造成的。不过在那儿之后又引出了@Payload的问题，不过也解决了。但是对原理还是不够了解，只是从应用角度解决（碰巧，这种解决方案不算太难看）
+
+                    channel.basicAck(envelope.getDeliveryTag(), false);
+                }
             }
         };
         channel.basicConsume(TERMINAL_CONFIG_CENTCONTROL2TERMINAL_QUEUE, consumer);

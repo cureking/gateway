@@ -19,9 +19,6 @@ public class TerminalInit {
     @Autowired
     private ITerminalService iTerminalService;
 
-    @Autowired
-    private TerminalProducer terminalProducer;
-
     @PostConstruct
     private void init() {
 

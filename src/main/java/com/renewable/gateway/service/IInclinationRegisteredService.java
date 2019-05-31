@@ -7,6 +7,8 @@ import com.renewable.gateway.pojo.InclinationRegister;
  * @Description：
  * @Author: jarry
  */
+
+@Deprecated
 public interface IInclinationRegisteredService {
 
     ServerResponse insertRegisteredInfo(InclinationRegister inclinationRegister);

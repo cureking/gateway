@@ -36,7 +36,6 @@ public class InclinationProducer {
     private static final String INCLINATION_TOTAL_EXCHANGE = "inclination-total-data-exchange";
     private static final String INCLINATION_TOTAL_QUEUE = "inclination-total-data-queue";
     private static final String INCLINATION_TOTAL_ROUTINETYPE = "topic";
-    private static final String INCLINATION_TOTAL_BINDINGKEY = "sensor.inclination.data.total";
     private static final String INCLINATION_TOTAL_ROUTINGKEY = "sensor.inclination.data.total";
     // inclinationInit 相关配置
     private static final String INCLINATION_INIT_EXCHANGE = "inclination-init-data-exchange";
@@ -54,8 +53,8 @@ public class InclinationProducer {
         Connection connection = factory.newConnection();
 
         Channel channel = connection.createChannel();
-        channel.exchangeDeclare(INCLINATION_TOTAL_EXCHANGE, INCLINATION_TOTAL_ROUTINETYPE, true, false, null);      //String exchange, String type, boolean durable, boolean autoDelete, Map<String, Object> arguments
-        channel.queueDeclare(INCLINATION_TOTAL_QUEUE, true, false, false, null);               //String queue, boolean durable, boolean exclusive, boolean autoDelete, Map<String, Object> arguments
+        channel.exchangeDeclare(INCLINATION_TOTAL_EXCHANGE, INCLINATION_TOTAL_ROUTINETYPE, true, false, null);      // String exchange, String type, boolean durable, boolean autoDelete, Map<String, Object> arguments
+        channel.queueDeclare(INCLINATION_TOTAL_QUEUE, true, false, false, null);               // String queue, boolean durable, boolean exclusive, boolean autoDelete, Map<String, Object> arguments
         channel.queueBind(INCLINATION_TOTAL_QUEUE, INCLINATION_TOTAL_EXCHANGE, INCLINATION_TOTAL_ROUTINGKEY);
 
         String inclinationTotalListStr = JsonUtil.obj2StringPretty(inclinationTotalList);
@@ -75,8 +74,8 @@ public class InclinationProducer {
         Connection connection = factory.newConnection();
 
         Channel channel = connection.createChannel();
-        channel.exchangeDeclare(INCLINATION_INIT_EXCHANGE, INCLINATION_INIT_ROUTINETYPE, true, false, null);      //String exchange, String type, boolean durable, boolean autoDelete, Map<String, Object> arguments
-        channel.queueDeclare(INCLINATION_INIT_QUEUE, true, false, false, null);               //String queue, boolean durable, boolean exclusive, boolean autoDelete, Map<String, Object> arguments
+        channel.exchangeDeclare(INCLINATION_INIT_EXCHANGE, INCLINATION_INIT_ROUTINETYPE, true, false, null);      // String exchange, String type, boolean durable, boolean autoDelete, Map<String, Object> arguments
+        channel.queueDeclare(INCLINATION_INIT_QUEUE, true, false, false, null);               // String queue, boolean durable, boolean exclusive, boolean autoDelete, Map<String, Object> arguments
         channel.queueBind(INCLINATION_INIT_QUEUE, INCLINATION_INIT_EXCHANGE, INCLINATION_INIT_ROUTINGKEY);
 
         String inclinationInitListStr = JsonUtil.obj2StringPretty(inclinationInitList);
@@ -87,7 +86,7 @@ public class InclinationProducer {
                         2,
                         0, null, null, null,
                         null, null, null,
-                        null,     // 用户ID，这里可以设置为终端服务器ID，之后完成配置中心后，并设定缓存配置初始化后，可以从缓存中获取终端服务器ID。    //如果没有ID，就发送IP，然后中控室通过IP分配新的ID。（不通过全局唯一ID来实现，太花时间了，目前规模也不需要）
+                        null,     // 用户ID，这里可以设置为终端服务器ID，之后完成配置中心后，并设定缓存配置初始化后，可以从缓存中获取终端服务器ID。    // 如果没有ID，就发送IP，然后中控室通过IP分配新的ID。（不通过全局唯一ID来实现，太花时间了，目前规模也不需要）
                         null,
                         null);
 

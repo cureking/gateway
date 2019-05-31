@@ -26,5 +26,7 @@ public interface InclinationDealedInitMapper {
 
     List<InclinationDealedInit> selectListByTime(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("sensor_identifier") int sensor_identifier);
 
-    int updateBatch(@Param(value = "inclinationDealedInitList")List<InclinationDealedInit> inclinationDealedInitList);
+    int updateVersionBatch(@Param(value = "inclinationDealedInitList")List<InclinationDealedInit> inclinationDealedInitList);
+
+    List<InclinationDealedInit> selectListByLimitAndTimeAndLastId(@Param("limit") double limit, @Param("limitDate") Date limitDate, @Param("lastOriginId") long lastOriginId, @Param("countLimit") int countLimit);
 }

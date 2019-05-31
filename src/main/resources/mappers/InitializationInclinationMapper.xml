@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.renewable.gateway.dao.InitializationInclinationMapper" >
+  <resultMap id="BaseResultMap" type="com.renewable.gateway.pojo.InitializationInclination" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="sensor_register_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="terminal_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="radius" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="init_h1" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="init_angle1" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="init_h2" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="init_angle2" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="init_h3" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="init_angle3" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="init_h4" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="init_angle4" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="init_total_angle" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="init_direct_angle" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="total_angle_limit" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="total_init_angle_limit" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="init_x" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="init_y" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, sensor_register_id, terminal_id, radius, init_h1, init_angle1, init_h2, init_angle2, 
+    init_h3, init_angle3, init_h4, init_angle4, init_total_angle, init_direct_angle, 
+    total_angle_limit, total_init_angle_limit, init_x, init_y, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from initialization_inclination
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from initialization_inclination
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.renewable.gateway.pojo.InitializationInclination" >
+    insert into initialization_inclination (id, sensor_register_id, terminal_id, 
+      radius, init_h1, init_angle1, 
+      init_h2, init_angle2, init_h3, 
+      init_angle3, init_h4, init_angle4, 
+      init_total_angle, init_direct_angle, total_angle_limit, 
+      total_init_angle_limit, init_x, init_y, 
+      create_time, update_time)
+    values (#{id,jdbcType=INTEGER}, #{sensorRegisterId,jdbcType=INTEGER}, #{terminalId,jdbcType=INTEGER}, 
+      #{radius,jdbcType=DOUBLE}, #{initH1,jdbcType=DOUBLE}, #{initAngle1,jdbcType=DOUBLE}, 
+      #{initH2,jdbcType=DOUBLE}, #{initAngle2,jdbcType=DOUBLE}, #{initH3,jdbcType=DOUBLE}, 
+      #{initAngle3,jdbcType=DOUBLE}, #{initH4,jdbcType=DOUBLE}, #{initAngle4,jdbcType=DOUBLE}, 
+      #{initTotalAngle,jdbcType=DOUBLE}, #{initDirectAngle,jdbcType=DOUBLE}, #{totalAngleLimit,jdbcType=DOUBLE}, 
+      #{totalInitAngleLimit,jdbcType=DOUBLE}, #{initX,jdbcType=DOUBLE}, #{initY,jdbcType=DOUBLE}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.renewable.gateway.pojo.InitializationInclination" >
+    insert into initialization_inclination
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="sensorRegisterId != null" >
+        sensor_register_id,
+      </if>
+      <if test="terminalId != null" >
+        terminal_id,
+      </if>
+      <if test="radius != null" >
+        radius,
+      </if>
+      <if test="initH1 != null" >
+        init_h1,
+      </if>
+      <if test="initAngle1 != null" >
+        init_angle1,
+      </if>
+      <if test="initH2 != null" >
+        init_h2,
+      </if>
+      <if test="initAngle2 != null" >
+        init_angle2,
+      </if>
+      <if test="initH3 != null" >
+        init_h3,
+      </if>
+      <if test="initAngle3 != null" >
+        init_angle3,
+      </if>
+      <if test="initH4 != null" >
+        init_h4,
+      </if>
+      <if test="initAngle4 != null" >
+        init_angle4,
+      </if>
+      <if test="initTotalAngle != null" >
+        init_total_angle,
+      </if>
+      <if test="initDirectAngle != null" >
+        init_direct_angle,
+      </if>
+      <if test="totalAngleLimit != null" >
+        total_angle_limit,
+      </if>
+      <if test="totalInitAngleLimit != null" >
+        total_init_angle_limit,
+      </if>
+      <if test="initX != null" >
+        init_x,
+      </if>
+      <if test="initY != null" >
+        init_y,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sensorRegisterId != null" >
+        #{sensorRegisterId,jdbcType=INTEGER},
+      </if>
+      <if test="terminalId != null" >
+        #{terminalId,jdbcType=INTEGER},
+      </if>
+      <if test="radius != null" >
+        #{radius,jdbcType=DOUBLE},
+      </if>
+      <if test="initH1 != null" >
+        #{initH1,jdbcType=DOUBLE},
+      </if>
+      <if test="initAngle1 != null" >
+        #{initAngle1,jdbcType=DOUBLE},
+      </if>
+      <if test="initH2 != null" >
+        #{initH2,jdbcType=DOUBLE},
+      </if>
+      <if test="initAngle2 != null" >
+        #{initAngle2,jdbcType=DOUBLE},
+      </if>
+      <if test="initH3 != null" >
+        #{initH3,jdbcType=DOUBLE},
+      </if>
+      <if test="initAngle3 != null" >
+        #{initAngle3,jdbcType=DOUBLE},
+      </if>
+      <if test="initH4 != null" >
+        #{initH4,jdbcType=DOUBLE},
+      </if>
+      <if test="initAngle4 != null" >
+        #{initAngle4,jdbcType=DOUBLE},
+      </if>
+      <if test="initTotalAngle != null" >
+        #{initTotalAngle,jdbcType=DOUBLE},
+      </if>
+      <if test="initDirectAngle != null" >
+        #{initDirectAngle,jdbcType=DOUBLE},
+      </if>
+      <if test="totalAngleLimit != null" >
+        #{totalAngleLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="totalInitAngleLimit != null" >
+        #{totalInitAngleLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="initX != null" >
+        #{initX,jdbcType=DOUBLE},
+      </if>
+      <if test="initY != null" >
+        #{initY,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.renewable.gateway.pojo.InitializationInclination" >
+    update initialization_inclination
+    <set >
+      <if test="sensorRegisterId != null" >
+        sensor_register_id = #{sensorRegisterId,jdbcType=INTEGER},
+      </if>
+      <if test="terminalId != null" >
+        terminal_id = #{terminalId,jdbcType=INTEGER},
+      </if>
+      <if test="radius != null" >
+        radius = #{radius,jdbcType=DOUBLE},
+      </if>
+      <if test="initH1 != null" >
+        init_h1 = #{initH1,jdbcType=DOUBLE},
+      </if>
+      <if test="initAngle1 != null" >
+        init_angle1 = #{initAngle1,jdbcType=DOUBLE},
+      </if>
+      <if test="initH2 != null" >
+        init_h2 = #{initH2,jdbcType=DOUBLE},
+      </if>
+      <if test="initAngle2 != null" >
+        init_angle2 = #{initAngle2,jdbcType=DOUBLE},
+      </if>
+      <if test="initH3 != null" >
+        init_h3 = #{initH3,jdbcType=DOUBLE},
+      </if>
+      <if test="initAngle3 != null" >
+        init_angle3 = #{initAngle3,jdbcType=DOUBLE},
+      </if>
+      <if test="initH4 != null" >
+        init_h4 = #{initH4,jdbcType=DOUBLE},
+      </if>
+      <if test="initAngle4 != null" >
+        init_angle4 = #{initAngle4,jdbcType=DOUBLE},
+      </if>
+      <if test="initTotalAngle != null" >
+        init_total_angle = #{initTotalAngle,jdbcType=DOUBLE},
+      </if>
+      <if test="initDirectAngle != null" >
+        init_direct_angle = #{initDirectAngle,jdbcType=DOUBLE},
+      </if>
+      <if test="totalAngleLimit != null" >
+        total_angle_limit = #{totalAngleLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="totalInitAngleLimit != null" >
+        total_init_angle_limit = #{totalInitAngleLimit,jdbcType=DOUBLE},
+      </if>
+      <if test="initX != null" >
+        init_x = #{initX,jdbcType=DOUBLE},
+      </if>
+      <if test="initY != null" >
+        init_y = #{initY,jdbcType=DOUBLE},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.renewable.gateway.pojo.InitializationInclination" >
+    update initialization_inclination
+    set sensor_register_id = #{sensorRegisterId,jdbcType=INTEGER},
+      terminal_id = #{terminalId,jdbcType=INTEGER},
+      radius = #{radius,jdbcType=DOUBLE},
+      init_h1 = #{initH1,jdbcType=DOUBLE},
+      init_angle1 = #{initAngle1,jdbcType=DOUBLE},
+      init_h2 = #{initH2,jdbcType=DOUBLE},
+      init_angle2 = #{initAngle2,jdbcType=DOUBLE},
+      init_h3 = #{initH3,jdbcType=DOUBLE},
+      init_angle3 = #{initAngle3,jdbcType=DOUBLE},
+      init_h4 = #{initH4,jdbcType=DOUBLE},
+      init_angle4 = #{initAngle4,jdbcType=DOUBLE},
+      init_total_angle = #{initTotalAngle,jdbcType=DOUBLE},
+      init_direct_angle = #{initDirectAngle,jdbcType=DOUBLE},
+      total_angle_limit = #{totalAngleLimit,jdbcType=DOUBLE},
+      total_init_angle_limit = #{totalInitAngleLimit,jdbcType=DOUBLE},
+      init_x = #{initX,jdbcType=DOUBLE},
+      init_y = #{initY,jdbcType=DOUBLE},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

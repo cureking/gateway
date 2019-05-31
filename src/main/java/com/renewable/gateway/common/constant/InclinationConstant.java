@@ -49,4 +49,6 @@ public class InclinationConstant {
         }
     }
 
+    public static final int UPLOADED_QUEUE_LIMIT = 50;
+
 }

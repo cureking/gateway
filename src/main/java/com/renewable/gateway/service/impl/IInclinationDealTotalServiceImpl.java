@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 import static com.renewable.gateway.common.constant.CacheConstant.TERMINAL_ID;
+import static com.renewable.gateway.common.constant.InclinationConstant.UPLOADED_QUEUE_LIMIT;
+import static com.renewable.gateway.common.constant.InclinationConstant.VERSION_CLEANED;
 
 /**
  * @Description：
@@ -87,7 +89,7 @@ public class IInclinationDealTotalServiceImpl implements IInclinationDealTotalSe
 
     @Override
     public ServerResponse uploadDataList() {
-        List<InclinationDealedTotal> inclinationDealedTotalList = inclinationDealedTotalMapper.selectListByVersionAndLimit(InclinationConstant.VERSION_CLEANED,50);  //这里以后要集成的Const文件中，另外相关数据字段，应该改为数字（节省带宽，降低出错可能性（写代码））
+        List<InclinationDealedTotal> inclinationDealedTotalList = inclinationDealedTotalMapper.selectListByVersionAndLimit(VERSION_CLEANED,UPLOADED_QUEUE_LIMIT);  //这里以后要集成的Const文件中，另外相关数据字段，应该改为数字（节省带宽，降低出错可能性（写代码））
         if (inclinationDealedTotalList == null) {
             return ServerResponse.createByErrorMessage("can't get targeted data from db");
         }
@@ -136,7 +138,6 @@ public class IInclinationDealTotalServiceImpl implements IInclinationDealTotalSe
     private InclinationTotal InclinationTotalAssemble(InclinationDealedTotal inclinationDealedTotal) {
         InclinationTotal inclinationTotal = new InclinationTotal();
 
-//        inclinationTotal.setId(inclinationDealedTotal.getId());       // ID不需要传入，由数据库自动递增生成。如果需要在终端服务器找到对应清洗后的数据，可以通过origin_id。其也是唯一标识的，可以作为关键键。
         inclinationTotal.setSensorId(inclinationDealedTotal.getSensorId());
         inclinationTotal.setOriginId(inclinationDealedTotal.getOriginId());
         inclinationTotal.setAngleX(inclinationDealedTotal.getAngleX());

@@ -5,10 +5,7 @@ import com.renewable.gateway.common.sensor.InclinationConst;
 import com.renewable.gateway.rabbitmq.producer.InclinationProducer;
 import com.renewable.gateway.serial.SerialPool;
 import com.renewable.gateway.serial.sensor.InclinationDeal526T;
-import com.renewable.gateway.service.IInclinationDealInitService;
-import com.renewable.gateway.service.IInclinationDealTotalService;
-import com.renewable.gateway.service.IInclinationService;
-import com.renewable.gateway.service.ISensorDataService;
+import com.renewable.gateway.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -42,10 +39,13 @@ public class simpleTimer {
     @Autowired
     private IInclinationDealInitService iInclinationDealInitService;
 
+    @Autowired
+    private IWarningService iWarningService;
+
     /**
      * 用于实现轮询获取传感器监测数据
      */
-//    @Scheduled(cron = "*/5 * * * * *")  //每五秒钟    //数据读取  //暂停，以便进行Terminal的调试工作
+//    @Scheduled(cron = "*/5 * * * * *")  //每五秒钟    //数据读取  //暂停，以便进行相关调试工作
     public void requireSerialData() {
         log.info("请求监测数据定时任务启动");
 
@@ -76,7 +76,7 @@ public class simpleTimer {
     }
 
 
-    @Scheduled(cron = "*/20 * * * * *") // 1分钟      //暂停，以便进行Terminal的调试工作
+//    @Scheduled(cron = "*/20 * * * * *") // 20秒      //暂停，以便进行相关调试工作
     public void RabbitMQAndInclinationIntegrateService() {
         System.out.println("RabbitMQAndInclinationIntegrateService start！");
 
@@ -85,4 +85,14 @@ public class simpleTimer {
 
         System.out.println("RabbitMQAndInclinationIntegrateService end");
     }
+
+//    @Scheduled(cron = "*/50 * * * * *") // 20秒
+    public void WarningService(){
+        System.out.println("RabbitMQAndInclinationIntegrateService start！");
+
+        iWarningService.stateCheck();
+
+        System.out.println("RabbitMQAndInclinationIntegrateService end");
+    }
+
 }

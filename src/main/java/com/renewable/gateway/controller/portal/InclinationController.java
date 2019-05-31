@@ -32,5 +32,4 @@ public class InclinationController {
         inclination.setTemperature(10.0);
         return iInclinationService.inclinationData2DB(inclination);
     }
-
 }

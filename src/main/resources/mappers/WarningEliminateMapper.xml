@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.renewable.gateway.dao.WarningEliminateMapper" >
+  <resultMap id="BaseResultMap" type="com.renewable.gateway.pojo.WarningEliminate" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="warning_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="eliminate_way" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="mark" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="terminal_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="sensor_type" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, warning_id, user_id, eliminate_way, mark, terminal_id, sensor_type, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from warning_eliminate
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from warning_eliminate
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.renewable.gateway.pojo.WarningEliminate" >
+    insert into warning_eliminate (id, warning_id, user_id, 
+      eliminate_way, mark, terminal_id, 
+      sensor_type, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{warningId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, 
+      #{eliminateWay,jdbcType=INTEGER}, #{mark,jdbcType=VARCHAR}, #{terminalId,jdbcType=INTEGER}, 
+      #{sensorType,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.renewable.gateway.pojo.WarningEliminate" >
+    insert into warning_eliminate
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="warningId != null" >
+        warning_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="eliminateWay != null" >
+        eliminate_way,
+      </if>
+      <if test="mark != null" >
+        mark,
+      </if>
+      <if test="terminalId != null" >
+        terminal_id,
+      </if>
+      <if test="sensorType != null" >
+        sensor_type,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="warningId != null" >
+        #{warningId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="eliminateWay != null" >
+        #{eliminateWay,jdbcType=INTEGER},
+      </if>
+      <if test="mark != null" >
+        #{mark,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalId != null" >
+        #{terminalId,jdbcType=INTEGER},
+      </if>
+      <if test="sensorType != null" >
+        #{sensorType,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.renewable.gateway.pojo.WarningEliminate" >
+    update warning_eliminate
+    <set >
+      <if test="warningId != null" >
+        warning_id = #{warningId,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="eliminateWay != null" >
+        eliminate_way = #{eliminateWay,jdbcType=INTEGER},
+      </if>
+      <if test="mark != null" >
+        mark = #{mark,jdbcType=VARCHAR},
+      </if>
+      <if test="terminalId != null" >
+        terminal_id = #{terminalId,jdbcType=INTEGER},
+      </if>
+      <if test="sensorType != null" >
+        sensor_type = #{sensorType,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.renewable.gateway.pojo.WarningEliminate" >
+    update warning_eliminate
+    set warning_id = #{warningId,jdbcType=INTEGER},
+      user_id = #{userId,jdbcType=INTEGER},
+      eliminate_way = #{eliminateWay,jdbcType=INTEGER},
+      mark = #{mark,jdbcType=VARCHAR},
+      terminal_id = #{terminalId,jdbcType=INTEGER},
+      sensor_type = #{sensorType,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

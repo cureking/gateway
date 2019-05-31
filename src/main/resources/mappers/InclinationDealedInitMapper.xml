@@ -200,7 +200,7 @@
     and create_time &gt;=#{startTime}
     and sensor_id = #{sensor_identifier}
   </select>
-  <update id="updateBatch" parameterType="list">
+  <update id="updateVersionBatch" parameterType="list">
     update sensor_inclination_deal_init
     set  version = "Uploaded"
     where id in
@@ -208,4 +208,13 @@
       #{item.id,jdbcType=BIGINT}
     </foreach>
   </update>
+  <select id="selectListByLimitAndTimeAndLastId" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sensor_inclination_deal_init
+    where angle_init_total > #{limit}
+    and create_time > #{limitDate}
+    and origin_id > #{lastOriginId}
+    limit #{countLimit}
+  </select>
 </mapper>

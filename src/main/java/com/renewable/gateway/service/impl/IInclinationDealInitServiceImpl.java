@@ -19,10 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 import static com.renewable.gateway.common.constant.CacheConstant.TERMINAL_ID;
+import static com.renewable.gateway.common.constant.InclinationConstant.UPLOADED_QUEUE_LIMIT;
+import static com.renewable.gateway.common.constant.InclinationConstant.VERSION_CLEANED;
 
 /**
  * @Description：
@@ -89,7 +93,7 @@ public class IInclinationDealInitServiceImpl implements IInclinationDealInitServ
 
     @Override
     public ServerResponse uploadDataList() {
-        List<InclinationDealedInit> inclinationDealedInitList = inclinationDealedInitMapper.selectListByVersionAndLimit(InclinationConstant.VERSION_CLEANED,50);  //这里以后要集成的Const文件中，另外相关数据字段，应该改为数字（节省带宽，降低出错可能性（写代码））
+        List<InclinationDealedInit> inclinationDealedInitList = inclinationDealedInitMapper.selectListByVersionAndLimit(VERSION_CLEANED,UPLOADED_QUEUE_LIMIT);  //这里以后要集成的Const文件中，另外相关数据字段，应该改为数字（节省带宽，降低出错可能性（写代码））
         if (inclinationDealedInitList == null) {
             return ServerResponse.createByErrorMessage("can't get targeted data from db");
         }
@@ -113,13 +117,15 @@ public class IInclinationDealInitServiceImpl implements IInclinationDealInitServ
         }
 
         // 当上述操作没有出现问题，这里可以将之前的那些数据在数据库的状态修改
-        int countRow = inclinationDealedInitMapper.updateBatch(uploadedInclinationDealedInitList);
+        int countRow = inclinationDealedInitMapper.updateVersionBatch(uploadedInclinationDealedInitList);
         if (countRow == 0){
             return ServerResponse.createByErrorMessage("Inclinations update fail !");
         }
 
         return ServerResponse.createBySuccessMessage("Inclination data sended to MQ !");
     }
+
+
 
     private ServerResponse<List<InclinationInit>> inclinationDealedInitList2InclinationInitList(List<InclinationDealedInit> inclinationDealedInitList) {
         if (inclinationDealedInitList == null) {
@@ -138,7 +144,6 @@ public class IInclinationDealInitServiceImpl implements IInclinationDealInitServ
     private InclinationInit InclinationTotalAssemble(InclinationDealedInit inclinationDealedInit) {
         InclinationInit inclinationInit = new InclinationInit();
 
-//        inclinationTotal.setId(inclinationDealedTotal.getId());       // ID不需要传入，由数据库自动递增生成。如果需要在终端服务器找到对应清洗后的数据，可以通过origin_id。其也是唯一标识的，可以作为关键键。
         inclinationInit.setSensorId(inclinationDealedInit.getSensorId());
         inclinationInit.setOriginId(inclinationDealedInit.getOriginId());
         inclinationInit.setAngleX(inclinationDealedInit.getAngleX());
@@ -172,5 +177,26 @@ public class IInclinationDealInitServiceImpl implements IInclinationDealInitServ
         return inclinationDealedInitList;
     }
 
+
+    /**
+     *
+     * @param limit 阈值
+     * @param duration 距离现在多久的数据
+     * @param lastOriginId 上次查询的最后一条异常数据的ID
+     * @return
+     */
+    @Override
+    public ServerResponse<List<InclinationDealedInit>> listCheckedData(double limit, long duration, long lastOriginId, int countLimit) {
+        Date date = new Date();
+        Date limitDate = new Date(date.getTime() - duration);
+        System.out.println("now: "+date+"  duration:"+duration);
+        System.out.println("limitDate: "+limitDate);
+
+        List<InclinationDealedInit> inclinationInitCheckList = inclinationDealedInitMapper.selectListByLimitAndTimeAndLastId(limit, limitDate, lastOriginId, countLimit);
+        if (inclinationInitCheckList == null){
+            return ServerResponse.createByErrorMessage("list inclinationInit check fail !");
+        }
+        return ServerResponse.createBySuccess(inclinationInitCheckList);
+    }
 
 }
