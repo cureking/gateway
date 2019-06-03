@@ -1,6 +1,7 @@
 package com.renewable.gateway.dao;
 
 import com.renewable.gateway.pojo.InitializationInclination;
+import org.apache.ibatis.annotations.Param;
 
 public interface InitializationInclinationMapper {
     int deleteByPrimaryKey(Integer id);
@@ -14,4 +15,7 @@ public interface InitializationInclinationMapper {
     int updateByPrimaryKeySelective(InitializationInclination record);
 
     int updateByPrimaryKey(InitializationInclination record);
+
+    // custom
+    InitializationInclination selectByTerminalIdAndSensorRegisterId(@Param("terminalId") int terminalId, @Param("sensorRegisterId") int sensorRegisterId);
 }

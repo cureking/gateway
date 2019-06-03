@@ -157,6 +157,38 @@ public class ISerialSensorServiceImpl implements ISerialSensorService {
         return ServerResponse.createBySuccessMessage("the serialSensor config has uploaded to centControl .");
     }
 
+    @Override
+    public ServerResponse receiveSerialSensorFromMQ(SerialSensor serialSensor) {
+        // 1.校验数据
+        if (serialSensor == null){
+            return ServerResponse.createByErrorMessage("the serialSensor is null !");
+        }
+
+        // 2.数据组装
+        SerialSensor insertSerialSensor = serialSensor;
+
+        // 3.保存serialSensor至数据库
+        ServerResponse insertSerialSensorResponse = this.insert(insertSerialSensor);
+        if (insertSerialSensorResponse.isFail()){
+            return insertSerialSensorResponse;
+        }
+
+        return ServerResponse.createBySuccessMessage("the serialSensor has inserted .");
+    }
+
+    @Override
+    public ServerResponse getSerialSensorByPortAndAddress(String port, String address) {
+        int terminalId = Integer.parseInt(GuavaCache.getKey(TERMINAL_ID));
+
+        SerialSensor serialSensor = serialSensorMapper.selectByTerminalIdAndPortAndAddress(terminalId, port, address);
+        if (serialSensor == null){
+            return ServerResponse.createByErrorMessage("can't find the serialSensor with the terminalId: "+terminalId+" and port: "+port+" and address: "+address);
+        }
+
+        return ServerResponse.createBySuccess(serialSensor);
+    }
+
+
     private SerialSensor serialSensorGeneratorByPort(String port){
         if (port == null){
             return null;
@@ -165,6 +197,7 @@ public class ISerialSensorServiceImpl implements ISerialSensorService {
         SerialSensor resultSerialSensor = new SerialSensor();
 
         resultSerialSensor.setSensorRegisterId(65565);  // 这里设置一个无效的确定值，确保之后可以更新它
+        System.out.println(GuavaCache.getKey(TERMINAL_ID));
         resultSerialSensor.setTerminalId(Integer.parseInt(GuavaCache.getKey(TERMINAL_ID)));
         resultSerialSensor.setPort(port);
         resultSerialSensor.setAddress("01");        // 这里设置一个默认值（该默认值应当设置在常量表中）.这个量除非硬件做出让步，否则是无法实现自动注册的

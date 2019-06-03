@@ -18,4 +18,10 @@ public interface ISerialSensorService {
     ServerResponse update(SerialSensor serialSensor);
 
     ServerResponse refresh();
+
+    ServerResponse receiveSerialSensorFromMQ(SerialSensor serialSensor);
+
+    ServerResponse getSerialSensorByPortAndAddress(String port, String address);
+
+
 }

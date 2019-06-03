@@ -184,4 +184,14 @@
     where terminal_id = #{terminalId}
     and port = #{port}
   </select>
+  <select id="selectByTerminalIdAndPortAndAddress" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from serial_sensor
+    where port = #{port}
+    and address = #{address}
+    <if test="terminalId != null">
+      and terminalId = #{terminalId}
+    </if>
+  </select>
 </mapper>

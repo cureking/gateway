@@ -3,19 +3,15 @@ package com.renewable.gateway.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import com.renewable.gateway.common.Const;
 import com.renewable.gateway.common.ServerResponse;
 import com.renewable.gateway.common.sensor.InclinationConst;
 import com.renewable.gateway.dao.InclinationMapper;
-import com.renewable.gateway.dao.InclinationRegisterMapper;
 import com.renewable.gateway.dao.SensorRegisterMapper;
-import com.renewable.gateway.pojo.Inclination;
-import com.renewable.gateway.pojo.InclinationDealedTotal;
-import com.renewable.gateway.pojo.InclinationRegister;
-import com.renewable.gateway.pojo.SensorRegister;
+import com.renewable.gateway.pojo.*;
 import com.renewable.gateway.serial.sensor.InclinationDeal526T;
 import com.renewable.gateway.service.IInclinationService;
-import com.renewable.gateway.service.IRegisteredInfoService;
+import com.renewable.gateway.service.IInitializationInclinationService;
+import com.renewable.gateway.service.ISerialSensorService;
 import com.renewable.gateway.util.DateTimeUtil;
 import com.renewable.gateway.util.OtherUtil;
 import com.renewable.gateway.vo.InclinationVo;
@@ -39,17 +35,13 @@ public class IInclinationServiceImpl implements IInclinationService {
     private InclinationMapper inclinationMapper;
 
     @Autowired
-    private IRegisteredInfoService iRegisteredInfoService;
+    private ISerialSensorService iSerialSensorService;
 
     @Autowired
-    private InclinationRegisterMapper inclinationRegisterMapper;
-
-    @Autowired
-    private SensorRegisterMapper sensorRegisterMapper;
+    private IInitializationInclinationService iInitializationInclinationService;
 
 //    @Autowired
-//    private Calcul calcul;
-
+//    private SensorRegisterMapper sensorRegisterMapper;
 
     public ServerResponse<PageInfo> getInclinationDataList(int pageNum, int pageSize) {
         //pagehelper 使用逻辑:  第一步，startPage--start；第二步，填充自己的sql查询逻辑；第三步，pageHelper--收尾
@@ -121,25 +113,32 @@ public class IInclinationServiceImpl implements IInclinationService {
 
         //获取算法三所需参数（调用算法二matlab版）   //todo 其实这里应该是根据port与address的，但是 获取的数据还没有address。。当然上一层的数据是有的，只是没有传下来，之后有时间弄一下。
         System.out.println("port:" + port + " baudrate:" + baudrate);
-        SensorRegister sensorRegister = sensorRegisterMapper.selectByPortAndAddress(port, "01");
-
-        if (sensorRegister == null) {
-            return ServerResponse.createByErrorMessage("sensorID:" + sensorRegister.getId());
+        StringBuilder address = new StringBuilder("01");
+        ServerResponse serialSensorResponse = iSerialSensorService.getSerialSensorByPortAndAddress(port,address.toString());
+        if (serialSensorResponse.isFail()){
+            return ServerResponse.createByErrorMessage("can't get the serialSensor with port: "+port+ " address: "+address.toString());
         }
-        System.out.println("inclinationRegisterMapper:" + inclinationRegisterMapper);
-        InclinationRegister inclinationRegister = inclinationRegisterMapper.selectBySensorKey(sensorRegister.getId());
-        if (inclinationRegister == null) {
-            System.out.println("inclinationRegister 获取失败");
-        }
+        SerialSensor serialSensor = (SerialSensor)serialSensorResponse.getData();
+//        SensorRegister sensorRegister = sensorRegisterMapper.selectByPortAndAddress(port, "01");
 
-        double R = inclinationRegister.getRadius();
+        if (serialSensor == null) {
+            return ServerResponse.createByErrorMessage("can't get the serialSensor with port: "+port+ " address: "+address.toString());
+        }
+        int sensorRegisterIdInInitializationInclination = serialSensor.getSensorRegisterId();
+        ServerResponse initializationInclinationResponse = iInitializationInclinationService.getInitializationInclinationBySensorRegisterId(sensorRegisterIdInInitializationInclination);
+        if (initializationInclinationResponse.isFail()){
+            return ServerResponse.createByErrorMessage("can't get the initializationInclinationResponse with sensorRegisterId: "+sensorRegisterIdInInitializationInclination);
+        }
+        InitializationInclination initializationInclination = (InitializationInclination)initializationInclinationResponse.getData();
+
+        double R = initializationInclination.getRadius();
         double[][] initMeasuerArray = OtherUtil.assembleMatlabArray(
-                inclinationRegister.getInitH1(), inclinationRegister.getInitH2(), inclinationRegister.getInitH3(), inclinationRegister.getInitH4(),
-                inclinationRegister.getInitAngle1(), inclinationRegister.getInitAngle2(), inclinationRegister.getInitAngle3(), inclinationRegister.getInitAngle4());
+                initializationInclination.getInitH1(), initializationInclination.getInitH2(), initializationInclination.getInitH3(), initializationInclination.getInitH4(),
+                initializationInclination.getInitAngle1(), initializationInclination.getInitAngle2(), initializationInclination.getInitAngle3(), initializationInclination.getInitAngle4());
 
 
         //开始算法三的计算          //InclinationConst.InclinationInstallModeEnum.FOUR
-        double[] resultTDInitArray = this.calInitAngleTotal(inclination.getAngleX(), inclination.getAngleY(), inclinationRegister.getInitX(), inclinationRegister.getInitY(), inclinationRegister.getInitTotalAngle(), InclinationConst.InclinationInstallModeEnum.codeOf(1));
+        double[] resultTDInitArray = this.calInitAngleTotal(inclination.getAngleX(), inclination.getAngleY(), initializationInclination.getInitX(), initializationInclination.getInitY(), initializationInclination.getInitTotalAngle(), InclinationConst.InclinationInstallModeEnum.codeOf(1));
 
 
         //放入计算后，包含初始角度的合倾角，极其对应的方位角
@@ -147,8 +146,7 @@ public class IInclinationServiceImpl implements IInclinationService {
         inclination.setDirectAngleInit(resultTDInitArray[1]);
         //日后需要，这里可以扩展加入方向角  //方向角的计算可以查看ipad上概念化画板/Renewable/未命名8（包含方位角的计算）
         //添加该数据对应的sensorID
-        inclination.setSensorId(inclinationRegister.getSensorId());
-
+        inclination.setSensorId(initializationInclination.getSensorRegisterId());
         inclination.setVersion("NoClean");
 
 
@@ -167,11 +165,6 @@ public class IInclinationServiceImpl implements IInclinationService {
         }
         return angleTotal;
     }
-
-    //计算包含初始角度的合倾角
-//    private double calAngleInitTotal(double angleX,double angleY){
-//
-//    }
 
     @Override
     public ServerResponse inclinationData2DB(Inclination inclination) {
@@ -198,91 +191,6 @@ public class IInclinationServiceImpl implements IInclinationService {
         //还可以添加一些公共部分，如url中的domain
 
         return inclinationVo;
-    }
-
-    @Override
-    public ServerResponse cleanDataTask(SensorRegister sensorRegister) {
-        //TODO 之后会考虑将一些几乎不改动的信息放入本地缓存中，以降低不必要的时间浪费。
-
-        //1.获取数据清洗的开始数据inclination
-        Inclination startInclination = inclinationMapper.selectNextByPrimaryKey(sensorRegister.getCleanLastId());
-//        System.out.println("IInclinationServiceImpl/cleanDataTask:startInclination:" + startInclination.toString());
-        //
-        Inclination currentInclination = inclinationMapper.selectNewByPrimaryKey();
-//        System.out.println("IInclinationServiceImpl/cleanDataTask:currentInclination:" + currentInclination.toString());
-
-        //2.判断现在到上一次数据清洗的时间间隔是否足够数据清洗周期长度
-        long timeDuration = currentInclination.getCreateTime().getTime() - startInclination.getCreateTime().getTime();
-//        System.out.println("IInclinationServiceImpl/cleanDataTask:timeDuration:" + timeDuration);
-        if (timeDuration < sensorRegister.getCleanInterval()) {
-            return ServerResponse.createByErrorMessage("时间间隔尚未达到设定值，等待下一次清洗");
-        }
-
-        //3.进行数据清洗
-        return cleanDataAssort(sensorRegister, startInclination, currentInclination);
-    }
-
-    /**
-     * 对数据清洗类型进行分类
-     *
-     * @param sensorRegister
-     * @return
-     */
-    private ServerResponse cleanDataAssort(SensorRegister sensorRegister, Inclination startInclination, Inclination currentInclination) {
-        if (sensorRegister.getCleanType() == Const.DataCleanType.NoAction.getCode()) {
-            return ServerResponse.createBySuccessMessage("该传感器的数据处理类型为" + Const.DataCleanType.NoAction.getValue());
-        } else if (sensorRegister.getCleanType() == Const.DataCleanType.PeakAction.getCode()) {
-            cleanDatabyPeak(sensorRegister, startInclination, currentInclination);
-        } else if (sensorRegister.getCleanType() == Const.DataCleanType.TimeAreaAction.getCode()) {
-
-        }
-        return null;
-    }
-
-    /**
-     * 数据清洗中峰值清洗法
-     *
-     * @param sensorRegister
-     * @param startInclination
-     * @param currentInclination
-     * @return
-     */
-    private ServerResponse cleanDatabyPeak(SensorRegister sensorRegister, Inclination startInclination, Inclination currentInclination) {
-        //todo 2019.04.04   目前的打算是暂时新建表，之后再设定Spring多数据源。
-
-        //1.获得有效结束 endInclination     之前已经处理了不足一个周期的，接下来就是判断有多少个周期
-        long startTime = startInclination.getCreateTime().getTime();
-        long currentTime = currentInclination.getCreateTime().getTime();
-        long duration = currentTime - startTime;
-        long interval = sensorRegister.getCleanInterval();
-        long periodCound = duration / interval;
-
-        //2.每个周期要产生一个inclinationDeal
-        for (int i = 0; i < periodCound; i++) {
-            System.out.println("IInclinationServiceImpl/cleanDatabyPeak: startTime:" + startTime + "  currentTime" + currentTime + "  duration:" + duration + " interval:" + interval + "  periodCound" + periodCound + "  i:" + i);
-            //a.计算每个周期的开始时间与结束时间
-            long cycleStartTime = startTime + interval * i;
-            long cycleEndTime = startTime + interval * (i + 1);
-            //b.获取该周期内的峰值inclination
-//            System.out.println(sensorRegister.getId());
-//            System.out.println(inclinationMapper.selectPeakByIdArea(2200,2300));
-            Inclination peakInclination = inclinationMapper.selcetPeakByTimeArea(sensorRegister.getId(), new Date(cycleStartTime), new Date(cycleEndTime));
-            if (peakInclination == null) {
-//                return ServerResponse.createByErrorMessage("获取峰值失败:" + sensorRegister.toString());
-                continue;
-            }
-            System.out.println("IInclinationServiceImpl/cleanDatabyPeak: startTime:" + cycleStartTime + "  endTime:" + cycleEndTime + "  start2String" + new Date(cycleStartTime) + "  peakInclinationId:" + peakInclination.getId());
-            //c.对峰值进行封装 日后便于扩展
-            InclinationDealedTotal inclinationDealedTotal = new InclinationDealedTotal();
-            inclinationDealedTotal = inclinationDealAssemble(peakInclination);
-            //d.保存峰值
-//            iInclinationDealService.inclinationData2DB(inclinationDealedTotal);
-        }
-        //3.保存最新清洗的inclination_id   //不一定是当前的
-        long lastTime = startTime + interval * periodCound;
-        long lastId = inclinationMapper.selectLastIdbyTime(new Date(lastTime));
-        sensorRegister.setCleanLastId(lastTime);
-        return iRegisteredInfoService.updateSensor(sensorRegister);
     }
 
     private InclinationDealedTotal inclinationDealAssemble(Inclination inclination) {

@@ -28,9 +28,6 @@ public interface IInclinationService {
     //数据处理模块的调用 目前还可以用来进行一些测试
     ServerResponse inclinationData2DB(Inclination inclination);
 
-    //数据清洗
-    ServerResponse cleanDataTask(SensorRegister sensorRegister);
-
     //设置风机初始倾角测量的计算(算法一）
     double[] initTotalAngleCal(double[][] initMeasureArray, double R);
 

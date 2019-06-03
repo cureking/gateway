@@ -269,4 +269,14 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+  <select id="selectByTerminalIdAndSensorRegisterId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from initialization_inclination
+    where sensorRegisterId = {sensorRegisterId}
+    <if test="terminalId != null">
+      and terminal_id = #{terminalId}
+    </if>
+  </select>
 </mapper>

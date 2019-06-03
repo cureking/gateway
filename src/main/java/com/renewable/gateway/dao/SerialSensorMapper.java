@@ -22,4 +22,6 @@ public interface SerialSensorMapper {
     int insertBatch(@Param("serialSensorList") List<SerialSensor> serialSensorList);
 
     List<SerialSensor> selectByTerminalIdAndPort(@Param("terminalId") int terminalId, @Param("port") String port);
+
+    SerialSensor selectByTerminalIdAndPortAndAddress(@Param("terminalId") int terminalId, @Param("port") String port, @Param("address") String address);
 }

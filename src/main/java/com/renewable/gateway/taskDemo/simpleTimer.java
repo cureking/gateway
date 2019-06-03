@@ -22,9 +22,6 @@ import java.util.Arrays;
 public class simpleTimer {
 
     @Autowired
-    private ISensorDataService iSensorDataService;
-
-    @Autowired
     private SerialPool serialPool;
 
     @Autowired
