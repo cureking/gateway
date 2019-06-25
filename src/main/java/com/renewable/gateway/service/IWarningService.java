@@ -11,11 +11,11 @@ import java.util.List;
  */
 public interface IWarningService {
 
-    ServerResponse insertWarning(Warning warning);
+	ServerResponse insertWarning(Warning warning);
 
-    ServerResponse insertWarningList(List<Warning> warningList);
+	ServerResponse insertWarningList(List<Warning> warningList);
 
-    ServerResponse stateCheck();
+	ServerResponse stateCheck();
 
-    ServerResponse inclinationInitCheck();
+	ServerResponse inclinationInitCheck();
 }

@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renewable.gateway.dao.TerminalMapper" >
-  <resultMap id="BaseResultMap" type="com.renewable.gateway.pojo.Terminal" >
-    <constructor >
-      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="project_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="ip" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="mac" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="mark" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-    </constructor>
-  </resultMap>
-  <sql id="Base_Column_List" >
+<mapper namespace="com.renewable.gateway.dao.TerminalMapper">
+    <resultMap id="BaseResultMap" type="com.renewable.gateway.pojo.Terminal">
+        <constructor>
+            <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="project_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="ip" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="mac" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="mark" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="state" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, project_id, ip, mac, name, mark, state, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from terminal
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from terminal
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from terminal
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.renewable.gateway.pojo.Terminal" >
+    <insert id="insert" parameterType="com.renewable.gateway.pojo.Terminal">
     insert into terminal (id, project_id, ip, 
       mac, name, mark, state, 
       create_time, update_time)
@@ -35,98 +35,98 @@
       #{mac,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{mark,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, 
       now(), now())
   </insert>
-  <insert id="insertSelective" parameterType="com.renewable.gateway.pojo.Terminal" >
-    insert into terminal
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="projectId != null" >
-        project_id,
-      </if>
-      <if test="ip != null" >
-        ip,
-      </if>
-      <if test="mac != null" >
-        mac,
-      </if>
-      <if test="name != null" >
-        name,
-      </if>
-      <if test="mark != null" >
-        mark,
-      </if>
-      <if test="state != null" >
-        state,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="projectId != null" >
-        #{projectId,jdbcType=INTEGER},
-      </if>
-      <if test="ip != null" >
-        #{ip,jdbcType=VARCHAR},
-      </if>
-      <if test="mac != null" >
-        #{mac,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="mark != null" >
-        #{mark,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null" >
-        #{state,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
-        now(),
-      </if>
-      <if test="updateTime != null" >
-        now(),
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renewable.gateway.pojo.Terminal" >
-    update terminal
-    <set >
-      <if test="projectId != null" >
-        project_id = #{projectId,jdbcType=INTEGER},
-      </if>
-      <if test="ip != null" >
-        ip = #{ip,jdbcType=VARCHAR},
-      </if>
-      <if test="mac != null" >
-        mac = #{mac,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="mark != null" >
-        mark = #{mark,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null" >
-        state = #{state,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        update_time = now(),
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.renewable.gateway.pojo.Terminal" >
+    <insert id="insertSelective" parameterType="com.renewable.gateway.pojo.Terminal">
+        insert into terminal
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="projectId != null">
+                project_id,
+            </if>
+            <if test="ip != null">
+                ip,
+            </if>
+            <if test="mac != null">
+                mac,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="mark != null">
+                mark,
+            </if>
+            <if test="state != null">
+                state,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="projectId != null">
+                #{projectId,jdbcType=INTEGER},
+            </if>
+            <if test="ip != null">
+                #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="mac != null">
+                #{mac,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="mark != null">
+                #{mark,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                #{state,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                now(),
+            </if>
+            <if test="updateTime != null">
+                now(),
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.renewable.gateway.pojo.Terminal">
+        update terminal
+        <set>
+            <if test="projectId != null">
+                project_id = #{projectId,jdbcType=INTEGER},
+            </if>
+            <if test="ip != null">
+                ip = #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="mac != null">
+                mac = #{mac,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="mark != null">
+                mark = #{mark,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = now(),
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.renewable.gateway.pojo.Terminal">
     update terminal
     set project_id = #{projectId,jdbcType=INTEGER},
       ip = #{ip,jdbcType=VARCHAR},
@@ -138,42 +138,42 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="listTerminal" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from terminal
-  </select>
-  <update id="updateByMac" parameterType="com.renewable.gateway.pojo.Terminal">
-    update terminal
-    <set >
-      <if test="id != null">
-        id = #{id,jdbcType=INTEGER},
-      </if>
-      <if test="projectId != null" >
-        project_id = #{projectId,jdbcType=INTEGER},
-      </if>
-      <if test="ip != null" >
-        ip = #{ip,jdbcType=VARCHAR},
-      </if>
-      <if test="mac != null" >
-        mac = #{mac,jdbcType=VARCHAR},
-      </if>
-      <if test="name != null" >
-        name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="mark != null" >
-        mark = #{mark,jdbcType=VARCHAR},
-      </if>
-      <if test="state != null" >
-        state = #{state,jdbcType=INTEGER},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        update_time = now(),
-      </if>
-    </set>
-    where mac = #{mac,jdbcType=INTEGER}
-  </update>
+    <select id="listTerminal" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from terminal
+    </select>
+    <update id="updateByMac" parameterType="com.renewable.gateway.pojo.Terminal">
+        update terminal
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="projectId != null">
+                project_id = #{projectId,jdbcType=INTEGER},
+            </if>
+            <if test="ip != null">
+                ip = #{ip,jdbcType=VARCHAR},
+            </if>
+            <if test="mac != null">
+                mac = #{mac,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="mark != null">
+                mark = #{mark,jdbcType=VARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=INTEGER},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = now(),
+            </if>
+        </set>
+        where mac = #{mac,jdbcType=INTEGER}
+    </update>
 </mapper>

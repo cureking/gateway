@@ -39,11 +39,13 @@ public class InitializationInclination {
 
     private Double initY;
 
+    private Integer status;
+
     private Date createTime;
 
     private Date updateTime;
 
-    public InitializationInclination(Integer id, Integer sensorRegisterId, Integer terminalId, Double radius, Double initH1, Double initAngle1, Double initH2, Double initAngle2, Double initH3, Double initAngle3, Double initH4, Double initAngle4, Double initTotalAngle, Double initDirectAngle, Double totalAngleLimit, Double totalInitAngleLimit, Double initX, Double initY, Date createTime, Date updateTime) {
+    public InitializationInclination(Integer id, Integer sensorRegisterId, Integer terminalId, Double radius, Double initH1, Double initAngle1, Double initH2, Double initAngle2, Double initH3, Double initAngle3, Double initH4, Double initAngle4, Double initTotalAngle, Double initDirectAngle, Double totalAngleLimit, Double totalInitAngleLimit, Double initX, Double initY, Integer status, Date createTime, Date updateTime) {
         this.id = id;
         this.sensorRegisterId = sensorRegisterId;
         this.terminalId = terminalId;
@@ -62,6 +64,7 @@ public class InitializationInclination {
         this.totalInitAngleLimit = totalInitAngleLimit;
         this.initX = initX;
         this.initY = initY;
+        this.status = status;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
@@ -212,6 +215,14 @@ public class InitializationInclination {
 
     public void setInitY(Double initY) {
         this.initY = initY;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
     public Date getCreateTime() {

@@ -20,32 +20,32 @@ import java.io.Serializable;
 @ToString
 //  refer to redis.clients.jedis.HostAndPort
 public class PortAndBaudrate implements Serializable {
-    private static final long serialVersionUID = -519876229978427751L;
+	private static final long serialVersionUID = -519876229978427751L;
 
 
-    private String port;
-    private int baudrate;
+	private String port;
+	private int baudrate;
 
 
-    public static String[] extractParts(String from) {
-        int idx = from.lastIndexOf(",");
-        String host = idx != -1 ? from.substring(0, idx) : from;
-        String port = idx != -1 ? from.substring(idx + 1) : "";
-        return new String[]{host, port};
-    }
+	public static String[] extractParts(String from) {
+		int idx = from.lastIndexOf(",");
+		String host = idx != -1 ? from.substring(0, idx) : from;
+		String port = idx != -1 ? from.substring(idx + 1) : "";
+		return new String[]{host, port};
+	}
 
 
-    public static PortAndBaudrate parseString(String from) {
+	public static PortAndBaudrate parseString(String from) {
 
-        try {
-            String[] parts = extractParts(from);
-            String port = parts[0];
-            int baudrate = Integer.valueOf(parts[1]);
-            return new PortAndBaudrate(port, baudrate);
-        } catch (NumberFormatException ex) {
-            throw new IllegalArgumentException(ex);
-        }
-    }
+		try {
+			String[] parts = extractParts(from);
+			String port = parts[0];
+			int baudrate = Integer.valueOf(parts[1]);
+			return new PortAndBaudrate(port, baudrate);
+		} catch (NumberFormatException ex) {
+			throw new IllegalArgumentException(ex);
+		}
+	}
 
 
 }

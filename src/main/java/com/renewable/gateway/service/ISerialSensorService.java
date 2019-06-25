@@ -11,17 +11,27 @@ import java.util.List;
  */
 public interface ISerialSensorService {
 
-    ServerResponse insert(SerialSensor serialSensor);
+	ServerResponse insert(SerialSensor serialSensor);
 
-    ServerResponse insertBatch(List<SerialSensor> serialSensorList);
+	ServerResponse insertBatch(List<SerialSensor> serialSensorList);
 
-    ServerResponse update(SerialSensor serialSensor);
+	ServerResponse update(SerialSensor serialSensor);
 
-    ServerResponse refresh();
+	ServerResponse updateByUser(SerialSensor serialSensor);
 
-    ServerResponse receiveSerialSensorFromMQ(SerialSensor serialSensor);
+	ServerResponse getSerialSensorByPortAndAddress(String port, String address);
 
-    ServerResponse getSerialSensorByPortAndAddress(String port, String address);
+	ServerResponse list();
 
+	ServerResponse refresh();
+
+	ServerResponse sendSerialSensor2MQ(List<SerialSensor> serialSensorList);
+
+	ServerResponse receiveSerialSensorFromMQ(SerialSensor serialSensor);
+
+	// 定时任务-读取终端数据
+	ServerResponse taskLoadFromSerialSensor();
+
+	ServerResponse loadFromSerialSensorByList(List<SerialSensor> serialSensorList);
 
 }

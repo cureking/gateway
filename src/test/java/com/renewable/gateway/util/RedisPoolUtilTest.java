@@ -13,55 +13,55 @@ import org.junit.Test;
  */
 public class RedisPoolUtilTest {
 
-    @Before
-    public void before() throws Exception {
-    }
+	@Before
+	public void before() throws Exception {
+	}
 
-    @After
-    public void after() throws Exception {
-    }
+	@After
+	public void after() throws Exception {
+	}
 
-    /**
-     * Method: expire(String key, int exTime)
-     */
-    @Test
-    public void testExpire() throws Exception {
+	/**
+	 * Method: expire(String key, int exTime)
+	 */
+	@Test
+	public void testExpire() throws Exception {
 //TODO: Test goes here...
 //    Long result = RedisPoolUtil.expire("testExpire()_key",1000);
 //    assertNotNull(result);
-    }
+	}
 
-    /**
-     * Method: setEx(String key, String value, int exTime)
-     */
-    @Test
-    public void testSetEx() throws Exception {
+	/**
+	 * Method: setEx(String key, String value, int exTime)
+	 */
+	@Test
+	public void testSetEx() throws Exception {
 //TODO: Test goes here... 
-    }
+	}
 
-    /**
-     * Method: set(String key, String value)
-     */
-    @Test
-    public void testSet() throws Exception {
+	/**
+	 * Method: set(String key, String value)
+	 */
+	@Test
+	public void testSet() throws Exception {
 //TODO: Test goes here... 
-    }
+	}
 
-    /**
-     * Method: get(String key)
-     */
-    @Test
-    public void testGet() throws Exception {
+	/**
+	 * Method: get(String key)
+	 */
+	@Test
+	public void testGet() throws Exception {
 //TODO: Test goes here... 
-    }
+	}
 
-    /**
-     * Method: del(String key)
-     */
-    @Test
-    public void testDel() throws Exception {
+	/**
+	 * Method: del(String key)
+	 */
+	@Test
+	public void testDel() throws Exception {
 //TODO: Test goes here... 
-    }
+	}
 
 
 } 

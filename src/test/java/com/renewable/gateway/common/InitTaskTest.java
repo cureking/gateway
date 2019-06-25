@@ -14,36 +14,36 @@ import org.junit.Test;
  */
 public class InitTaskTest extends BaseSpringTestCase {
 
-    @Before
-    public void before() throws Exception {
-    }
+	@Before
+	public void before() throws Exception {
+	}
 
-    @After
-    public void after() throws Exception {
-    }
+	@After
+	public void after() throws Exception {
+	}
 
-    /**
-     * Method: init()
-     */
-    @Test
-    public void testInit() throws Exception {
+	/**
+	 * Method: init()
+	 */
+	@Test
+	public void testInit() throws Exception {
 //TODO: Test goes here... 
-    }
+	}
 
-    /**
-     * Method: updateLocalRegister()
-     */
-    @Test
-    public void testUpdateLocalRegister() throws Exception {
+	/**
+	 * Method: updateLocalRegister()
+	 */
+	@Test
+	public void testUpdateLocalRegister() throws Exception {
 //TODO: Test goes here... 
-    }
+	}
 
 
-    /**
-     * Method: getPhysicalRegister()
-     */
-    @Test
-    public void testGetPhysicalRegister() throws Exception {
+	/**
+	 * Method: getPhysicalRegister()
+	 */
+	@Test
+	public void testGetPhysicalRegister() throws Exception {
 //TODO: Test goes here... 
 /* 
 try { 
@@ -55,13 +55,13 @@ try {
 } catch(InvocationTargetException e) { 
 } 
 */
-    }
+	}
 
-    /**
-     * Method: initLocalRegister()
-     */
-    @Test
-    public void testInitLocalRegister() throws Exception {
+	/**
+	 * Method: initLocalRegister()
+	 */
+	@Test
+	public void testInitLocalRegister() throws Exception {
 //TODO: Test goes here...
 //    InitTask initTask = new InitTask();
 //    initTask.initLocalRegister();
@@ -76,6 +76,6 @@ try {
 } catch(InvocationTargetException e) { 
 } 
 */
-    }
+	}
 
 } 

@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renewable.gateway.dao.InclinationMapper" >
-  <resultMap id="BaseResultMap" type="com.renewable.gateway.pojo.Inclination" >
-    <constructor >
-      <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="sensor_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="angle_x" jdbcType="DOUBLE" javaType="java.lang.Double" />
-      <arg column="angle_y" jdbcType="DOUBLE" javaType="java.lang.Double" />
-      <arg column="angle_total" jdbcType="DOUBLE" javaType="java.lang.Double" />
-      <arg column="direct_angle" jdbcType="DOUBLE" javaType="java.lang.Double" />
-      <arg column="angle_init_total" jdbcType="DOUBLE" javaType="java.lang.Double" />
-      <arg column="direct_angle_init" jdbcType="DOUBLE" javaType="java.lang.Double" />
-      <arg column="temperature" jdbcType="DOUBLE" javaType="java.lang.Double" />
-      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="version" jdbcType="VARCHAR" javaType="java.lang.String" />
-    </constructor>
-  </resultMap>
-  <sql id="Base_Column_List" >
+<mapper namespace="com.renewable.gateway.dao.InclinationMapper">
+    <resultMap id="BaseResultMap" type="com.renewable.gateway.pojo.Inclination">
+        <constructor>
+            <idArg column="id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+            <arg column="sensor_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="angle_x" jdbcType="DOUBLE" javaType="java.lang.Double"/>
+            <arg column="angle_y" jdbcType="DOUBLE" javaType="java.lang.Double"/>
+            <arg column="angle_total" jdbcType="DOUBLE" javaType="java.lang.Double"/>
+            <arg column="direct_angle" jdbcType="DOUBLE" javaType="java.lang.Double"/>
+            <arg column="angle_init_total" jdbcType="DOUBLE" javaType="java.lang.Double"/>
+            <arg column="direct_angle_init" jdbcType="DOUBLE" javaType="java.lang.Double"/>
+            <arg column="temperature" jdbcType="DOUBLE" javaType="java.lang.Double"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="version" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, sensor_id, angle_x, angle_y, angle_total, direct_angle, angle_init_total, direct_angle_init, 
     temperature, create_time, version
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
-    select 
-    <include refid="Base_Column_List" />
-    from sensor_inclination
-    where id = #{id,jdbcType=BIGINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from sensor_inclination
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from sensor_inclination
     where id = #{id,jdbcType=BIGINT}
   </delete>
-  <insert id="insert" parameterType="com.renewable.gateway.pojo.Inclination" >
+    <insert id="insert" parameterType="com.renewable.gateway.pojo.Inclination">
     insert into sensor_inclination (id, sensor_id, angle_x, 
       angle_y, angle_total, direct_angle, 
       angle_init_total, direct_angle_init, temperature, 
@@ -40,116 +40,116 @@
       #{angleInitTotal,jdbcType=DOUBLE}, #{directAngleInit,jdbcType=DOUBLE}, #{temperature,jdbcType=DOUBLE}, 
       #{createTime,jdbcType=TIMESTAMP}, #{version,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.renewable.gateway.pojo.Inclination" >
-    insert into sensor_inclination
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="sensorId != null" >
-        sensor_id,
-      </if>
-      <if test="angleX != null" >
-        angle_x,
-      </if>
-      <if test="angleY != null" >
-        angle_y,
-      </if>
-      <if test="angleTotal != null" >
-        angle_total,
-      </if>
-      <if test="directAngle != null" >
-        direct_angle,
-      </if>
-      <if test="angleInitTotal != null" >
-        angle_init_total,
-      </if>
-      <if test="directAngleInit != null" >
-        direct_angle_init,
-      </if>
-      <if test="temperature != null" >
-        temperature,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="version != null" >
-        version,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=BIGINT},
-      </if>
-      <if test="sensorId != null" >
-        #{sensorId,jdbcType=INTEGER},
-      </if>
-      <if test="angleX != null" >
-        #{angleX,jdbcType=DOUBLE},
-      </if>
-      <if test="angleY != null" >
-        #{angleY,jdbcType=DOUBLE},
-      </if>
-      <if test="angleTotal != null" >
-        #{angleTotal,jdbcType=DOUBLE},
-      </if>
-      <if test="directAngle != null" >
-        #{directAngle,jdbcType=DOUBLE},
-      </if>
-      <if test="angleInitTotal != null" >
-        #{angleInitTotal,jdbcType=DOUBLE},
-      </if>
-      <if test="directAngleInit != null" >
-        #{directAngleInit,jdbcType=DOUBLE},
-      </if>
-      <if test="temperature != null" >
-        #{temperature,jdbcType=DOUBLE},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="version != null" >
-        #{version,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renewable.gateway.pojo.Inclination" >
-    update sensor_inclination
-    <set >
-      <if test="sensorId != null" >
-        sensor_id = #{sensorId,jdbcType=INTEGER},
-      </if>
-      <if test="angleX != null" >
-        angle_x = #{angleX,jdbcType=DOUBLE},
-      </if>
-      <if test="angleY != null" >
-        angle_y = #{angleY,jdbcType=DOUBLE},
-      </if>
-      <if test="angleTotal != null" >
-        angle_total = #{angleTotal,jdbcType=DOUBLE},
-      </if>
-      <if test="directAngle != null" >
-        direct_angle = #{directAngle,jdbcType=DOUBLE},
-      </if>
-      <if test="angleInitTotal != null" >
-        angle_init_total = #{angleInitTotal,jdbcType=DOUBLE},
-      </if>
-      <if test="directAngleInit != null" >
-        direct_angle_init = #{directAngleInit,jdbcType=DOUBLE},
-      </if>
-      <if test="temperature != null" >
-        temperature = #{temperature,jdbcType=DOUBLE},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="version != null" >
-        version = #{version,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.renewable.gateway.pojo.Inclination" >
+    <insert id="insertSelective" parameterType="com.renewable.gateway.pojo.Inclination">
+        insert into sensor_inclination
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sensorId != null">
+                sensor_id,
+            </if>
+            <if test="angleX != null">
+                angle_x,
+            </if>
+            <if test="angleY != null">
+                angle_y,
+            </if>
+            <if test="angleTotal != null">
+                angle_total,
+            </if>
+            <if test="directAngle != null">
+                direct_angle,
+            </if>
+            <if test="angleInitTotal != null">
+                angle_init_total,
+            </if>
+            <if test="directAngleInit != null">
+                direct_angle_init,
+            </if>
+            <if test="temperature != null">
+                temperature,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="version != null">
+                version,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="sensorId != null">
+                #{sensorId,jdbcType=INTEGER},
+            </if>
+            <if test="angleX != null">
+                #{angleX,jdbcType=DOUBLE},
+            </if>
+            <if test="angleY != null">
+                #{angleY,jdbcType=DOUBLE},
+            </if>
+            <if test="angleTotal != null">
+                #{angleTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="directAngle != null">
+                #{directAngle,jdbcType=DOUBLE},
+            </if>
+            <if test="angleInitTotal != null">
+                #{angleInitTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="directAngleInit != null">
+                #{directAngleInit,jdbcType=DOUBLE},
+            </if>
+            <if test="temperature != null">
+                #{temperature,jdbcType=DOUBLE},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                #{version,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.renewable.gateway.pojo.Inclination">
+        update sensor_inclination
+        <set>
+            <if test="sensorId != null">
+                sensor_id = #{sensorId,jdbcType=INTEGER},
+            </if>
+            <if test="angleX != null">
+                angle_x = #{angleX,jdbcType=DOUBLE},
+            </if>
+            <if test="angleY != null">
+                angle_y = #{angleY,jdbcType=DOUBLE},
+            </if>
+            <if test="angleTotal != null">
+                angle_total = #{angleTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="directAngle != null">
+                direct_angle = #{directAngle,jdbcType=DOUBLE},
+            </if>
+            <if test="angleInitTotal != null">
+                angle_init_total = #{angleInitTotal,jdbcType=DOUBLE},
+            </if>
+            <if test="directAngleInit != null">
+                direct_angle_init = #{directAngleInit,jdbcType=DOUBLE},
+            </if>
+            <if test="temperature != null">
+                temperature = #{temperature,jdbcType=DOUBLE},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="version != null">
+                version = #{version,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.renewable.gateway.pojo.Inclination">
     update sensor_inclination
     set sensor_id = #{sensorId,jdbcType=INTEGER},
       angle_x = #{angleX,jdbcType=DOUBLE},
@@ -165,75 +165,76 @@
   </update>
 
 
-  <select id="selectList" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from sensor_inclination
-    order by id asc
-  </select>
-  <select id="selectListByTime" parameterType="map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from sensor_inclination
-    <![CDATA[
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sensor_inclination
+        order by id asc
+    </select>
+    <select id="selectListByTime" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sensor_inclination
+        <![CDATA[
     where create_time <=#{endTime}
     ]]>
-    and create_time &gt;=#{startTime}
-  </select>
-  <select id="selectNextByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from sensor_inclination
-    where id = (select min(id) from sensor_inclination where id &gt; #{id,jdbcType=BIGINT})
-  </select>
-  <select id="selectNewByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from sensor_inclination
-    where id = (select max(id) from sensor_inclination)
-  </select>
-  <select id="selectPeakByIdArea" parameterType="map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from sensor_inclination
-    where angle_total =( select
-    max(angle_total)
-    from sensor_inclination
-    <![CDATA[
+        and create_time &gt;=#{startTime}
+    </select>
+    <select id="selectNextByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sensor_inclination
+        where id = (select min(id) from sensor_inclination where id &gt; #{id,jdbcType=BIGINT})
+    </select>
+    <select id="selectNewByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sensor_inclination
+        where id = (select max(id) from sensor_inclination)
+    </select>
+    <select id="selectPeakByIdArea" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sensor_inclination
+        where angle_total =( select
+        max(angle_total)
+        from sensor_inclination
+        <![CDATA[
     where id <=#{endId}
     ]]>
-    and id &gt;=#{startId})
-    order by id desc
-    limit 1
-  </select>
-  <select id="selcetPeakByTimeArea" parameterType="map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from sensor_inclination
-    where angle_total = (
-    select
-    max(angle_total)
-    from sensor_inclination
-    <![CDATA[
+        and id &gt;=#{startId})
+        order by id desc
+        limit 1
+    </select>
+    <select id="selcetPeakByTimeArea" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sensor_inclination
+        where angle_total = (
+        select
+        max(angle_total)
+        from sensor_inclination
+        <![CDATA[
       where create_time <=#{endTime}
       ]]>
-    and create_time &gt;=#{startTime}
-    and sensor_id = #{sensorId}
-    )
-    <![CDATA[
+        and create_time &gt;=#{startTime}
+        and sensor_id = #{sensorId}
+        )
+        <![CDATA[
     and create_time <=#{endTime}
     ]]>
-    and create_time &gt;=#{startTime}
-    and sensor_id = #{sensorId}
-    limit 1
-  </select>
-  <select id="selectLastIdbyTime" parameterType="date" resultType="long">
+        and create_time &gt;=#{startTime}
+        and sensor_id = #{sensorId}
+        limit 1
+    </select>
+    <select id="selectLastIdbyTime" parameterType="date" resultType="long">
         select
         max(id)
         from sensor_inclination
         where
         <![CDATA[
         create_time <=#{lastTime}
+
         ]]>
-  </select>
+    </select>
 </mapper>

@@ -16,14 +16,14 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class InclinationVo {
-    private Long id;
+	private Long id;
 
-    private Double angleX;
+	private Double angleX;
 
-    private Double angleY;
+	private Double angleY;
 
-    private Double temperature;
+	private Double temperature;
 
-    private Date createTime;
+	private Date createTime;
 
 }

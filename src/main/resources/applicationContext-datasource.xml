@@ -2,11 +2,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xsi:schemaLocation="http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <!--扫描-->
     <!--annotation-config="true" &lt;!&ndash; 是否激活属性注入注解 &ndash;&gt;-->
@@ -28,8 +25,9 @@
     </bean>
 
     <!--数据库连接，用到dbcp的一个连接池。对其中的属性进行设置（用到了上面的datasource.properties中设置的常量-->
-    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" init-method="createDataSource">
-    <!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">-->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
+          init-method="createDataSource">
+        <!--<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">-->
         <property name="driverClassName" value="${db.driverClassName}"/>
         <property name="url" value="${db.url}"/>
         <property name="username" value="${db.username}"/>
@@ -104,14 +102,14 @@
 
     <!-- 2.事务详情（事务通知） -->
     <!--<tx:advice id="txAdvice" transaction-manager="transactionManager">-->
-        <!--<tx:attributes>-->
-            <!--<tx:method name="transfer" propagation="REQUIRED" isolation="DEFAULT"/>-->
-        <!--</tx:attributes>-->
+    <!--<tx:attributes>-->
+    <!--<tx:method name="transfer" propagation="REQUIRED" isolation="DEFAULT"/>-->
+    <!--</tx:attributes>-->
     <!--</tx:advice>-->
 
     <!--&lt;!&ndash; 3.AOP编程，利用切入点表达式从目标类方法中 确定增强的连接器，从而获得切入点 &ndash;&gt;-->
     <!--<aop:config>-->
-        <!--<aop:advisor advice-ref="txAdvice" pointcut="execution(* com.renewable.gateway.service..*.*(..))"/>-->
+    <!--<aop:advisor advice-ref="txAdvice" pointcut="execution(* com.renewable.gateway.service..*.*(..))"/>-->
     <!--</aop:config>-->
 
     <!--&lt;!&ndash; 使用@Transactional进行声明式事务管理需要声明下面这行 &ndash;&gt;-->

@@ -9,13 +9,13 @@ import com.renewable.gateway.pojo.Terminal;
  */
 public interface ITerminalService {
 
-    ServerResponse listTerminal();
+	ServerResponse listTerminal();
 
-    ServerResponse insertTerminal(Terminal terminal);
+	ServerResponse insertTerminal(Terminal terminal);
 
-    ServerResponse getTerminalFromRabbitmq(Terminal terminal);
+	ServerResponse receiveTerminalFromRabbitmq(Terminal terminal);
 
-    ServerResponse refreshCacheFromDB();    // 目测这个没有过高的价值，可以先暂时放着，之后进行清理
+	ServerResponse refreshCacheFromDB();    // 目测这个没有过高的价值，可以先暂时放着，之后进行清理
 
-    ServerResponse refreshConfigFromCent();
+	ServerResponse refreshConfigFromCent();
 }

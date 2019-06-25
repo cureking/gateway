@@ -7,30 +7,30 @@ import java.util.Date;
 import java.util.List;
 
 public interface InclinationMapper {
-    int deleteByPrimaryKey(Long id);
+	int deleteByPrimaryKey(Long id);
 
-    int insert(Inclination record);
+	int insert(Inclination record);
 
-    int insertSelective(Inclination record);
+	int insertSelective(Inclination record);
 
-    Inclination selectByPrimaryKey(Long id);
+	Inclination selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(Inclination record);
+	int updateByPrimaryKeySelective(Inclination record);
 
-    int updateByPrimaryKey(Inclination record);
+	int updateByPrimaryKey(Inclination record);
 
-    //custom    pageHelper
-    List<Inclination> selectList();
+	//custom    pageHelper
+	List<Inclination> selectList();
 
-    List<Inclination> selectListByTime(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
+	List<Inclination> selectListByTime(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
-    Inclination selectNextByPrimaryKey(Long id);
+	Inclination selectNextByPrimaryKey(Long id);
 
-    Inclination selectNewByPrimaryKey();
+	Inclination selectNewByPrimaryKey();
 
-    Inclination selectPeakByIdArea(@Param("startId") long startId, @Param("endId") long endId);
+	Inclination selectPeakByIdArea(@Param("startId") long startId, @Param("endId") long endId);
 
-    Inclination selcetPeakByTimeArea(@Param("sensorId") int sensorId, @Param("startTime") Date startTime, @Param("endTime") Date endTime);
+	Inclination selcetPeakByTimeArea(@Param("sensorId") int sensorId, @Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
-    long selectLastIdbyTime(Date lastTime);
+	long selectLastIdbyTime(Date lastTime);
 }

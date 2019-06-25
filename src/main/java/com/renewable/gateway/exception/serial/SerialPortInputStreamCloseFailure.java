@@ -1,18 +1,18 @@
 package com.renewable.gateway.exception.serial;
 
 public class SerialPortInputStreamCloseFailure extends Exception {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 
-    public SerialPortInputStreamCloseFailure() {
-    }
+	public SerialPortInputStreamCloseFailure() {
+	}
 
-    @Override
-    public String toString() {
-        return "关闭串口对象输入流（InputStream）时出错！";
-    }
+	@Override
+	public String toString() {
+		return "关闭串口对象输入流（InputStream）时出错！";
+	}
 
 
 }

@@ -17,50 +17,50 @@ import static org.junit.Assert.assertNotNull;
  */
 public class RedisPoolTest extends BaseSpringTestCase {
 
-    private Jedis jedis;
+	private Jedis jedis;
 
-    @Before
-    public void before() throws Exception {
+	@Before
+	public void before() throws Exception {
 
-    }
+	}
 
-    @After
-    public void after() throws Exception {
-    }
+	@After
+	public void after() throws Exception {
+	}
 
-    /**
-     * Method: getJedis()
-     */
-    @Test
-    public void testGetJedis() throws Exception {
+	/**
+	 * Method: getJedis()
+	 */
+	@Test
+	public void testGetJedis() throws Exception {
 //TODO: Test goes here...
-        jedis = RedisPool.getJedis();
-        assertNotNull(jedis);
-    }
+		jedis = RedisPool.getJedis();
+		assertNotNull(jedis);
+	}
 
-    /**
-     * Method: returnResource(Jedis jedis)
-     */
-    @Test
-    public void testReturnResource() throws Exception {
+	/**
+	 * Method: returnResource(Jedis jedis)
+	 */
+	@Test
+	public void testReturnResource() throws Exception {
 //TODO: Test goes here...
 
-    }
+	}
 
-    /**
-     * Method: returnBrokenResource(Jedis jedis)
-     */
-    @Test
-    public void testReturnBrokenResource() throws Exception {
+	/**
+	 * Method: returnBrokenResource(Jedis jedis)
+	 */
+	@Test
+	public void testReturnBrokenResource() throws Exception {
 //TODO: Test goes here... 
-    }
+	}
 
 
-    /**
-     * Method: initPool()
-     */
-    @Test
-    public void testInitPool() throws Exception {
+	/**
+	 * Method: initPool()
+	 */
+	@Test
+	public void testInitPool() throws Exception {
 //TODO: Test goes here... 
 /* 
 try { 
@@ -72,6 +72,6 @@ try {
 } catch(InvocationTargetException e) { 
 } 
 */
-    }
+	}
 
 } 

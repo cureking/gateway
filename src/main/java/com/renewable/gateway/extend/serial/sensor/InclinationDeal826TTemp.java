@@ -1,4 +1,4 @@
-package com.renewable.gateway.serial.sensor;
+package com.renewable.gateway.extend.serial.sensor;
 
 import com.google.common.collect.Lists;
 import com.renewable.gateway.common.ServerResponse;
@@ -16,7 +16,7 @@ import java.util.List;
  * @Author: jarry
  */
 @Slf4j
-public class InclinationDeal {
+public class InclinationDeal826TTemp {
 
     public static ServerResponse origin2Object(byte[] originBuffer) {
         //对Byte的命令字数据进行补位处理（确保为正，便于处理）
@@ -94,9 +94,9 @@ public class InclinationDeal {
         Inclination inclination = new Inclination();
 //        Inclination.setAngleX();
         //这里暂时先利用硬编码实现，但很明显这并不优雅，之后优化处理。而且这里代码的健壮性极差，完全无法应对任何意料之外的情况，如outofarrayrangeexception.etc
-        double origin_X = origin2Double(OtherUtil.subBytes(originData, 4, 4));
-        double origin_Y = origin2Double(OtherUtil.subBytes(originData, 8, 4));
-        double origin_T = origin2Double(OtherUtil.subBytes(originData, 12, 4));
+        double origin_X = origin2Double(OtherUtil.subBytes(originData,4,4));
+        double origin_Y = origin2Double(OtherUtil.subBytes(originData,8,4));
+        double origin_T = origin2Double(OtherUtil.subBytes(originData,12,4));
         inclination.setAngleX(origin_X);
         inclination.setAngleY(origin_Y);
         inclination.setTemperature(origin_T);
@@ -132,7 +132,6 @@ public class InclinationDeal {
         targets[1] = (byte) (s & 0xFF);
         return targets;
     }
-
 
     private static String int2Byte(int data) {
         String hex = Integer.toHexString(data);
@@ -209,41 +208,39 @@ public class InclinationDeal {
 
     /**
      * 完成三个（也许应该扩展为多个，再做成工具Util）十六进制转double（包含合并）
-     * 这里已经在方法中预留了三个变量，用于日后扩展
      *
      * @param originData
      * @return
      */
     private static Double origin2Double(byte[] originData) {
-        byte[] originDataSplit = OtherUtil.arraySplitByByte(originData);
         double result = 0;
-
-        int signedCount = 1;
-        int integerCount = 2;
-        int decimalCount = 3;
-
         //数据符号与高位
-        int signedValue = (originDataSplit[0] >= 1) ? -1 : 1;
-
-        //整数域部分
-        int integerValue = HexUtil.bcd2int(OtherUtil.subBytes(originDataSplit, signedCount, integerCount));
-        System.out.println(Arrays.toString(originDataSplit));
+        int signed = (originData[0]/16>=1)? -1:1;
+        int top = originData[0]%16;
+        //整数域的剩余部分
+//        int dataI_2 = Integer.parseInt(HexUtil.bcdToHexString(OtherUtil.subBytes(originData,1,1)));
+        int dataI_2 = HexUtil.byte2hex2bcd2int(OtherUtil.subBytes(originData,1,1));
         //小数域
-        int decimalValue = HexUtil.bcd2int(OtherUtil.subBytes(originDataSplit, signedCount + integerCount, decimalCount));
+//        int dataI_3 = Integer.parseInt(HexUtil.bcdToHexString(OtherUtil.subBytes(originData,2,2)));
+        int dataI_3 = HexUtil.byte2hex2bcd2int(OtherUtil.subBytes(originData,2,2));
 
-        result = signedValue * (integerValue + decimalValue * Math.pow(10, -decimalCount));
-        System.out.println("result:" + result);
+        //这段代码是针对hex的，而倾斜传感器采用的是bcd码
+//        int first = dataI_1 % 16;
+//        result = sig * first * 100 + dataI_2 * 1 + dataI_3 * (-0.01) + dataI_4 * (-0.0001);
+
+        result = signed*(top*100+dataI_2+dataI_3*0.0001);
+        System.out.println("result:"+result);
         return result;
     }
 
 
     public static void main(String[] args) {
+//        byte[] origin = {18, 0, 37, 40};
+////        System.out.println(HexUtil.byte2hex2bcd2int(origin));
+//        origin2Double(origin);
 
-        byte[] test = {1, 8, 0, 0, 3, 7};
-        System.out.println(Arrays.toString(OtherUtil.subBytes(test, 1, 2)));
-        byte[] test2 = {8, 0};
-        System.out.println(HexUtil.bcd2int(test2));
-
-
+        ServerResponse serverResponse = command2Origin(2, InclinationConst.InclinationSensor1Enum.READALL);
+        byte[] sendbyte = (byte[])serverResponse.getData();
+        System.out.println(Arrays.toString(sendbyte));
     }
 }

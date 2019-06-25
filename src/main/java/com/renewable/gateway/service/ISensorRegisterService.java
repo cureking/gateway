@@ -9,7 +9,15 @@ import com.renewable.gateway.pojo.SensorRegister;
  */
 public interface ISensorRegisterService {
 
-    ServerResponse insert(SensorRegister sensorRegister);
+	ServerResponse insert(SensorRegister sensorRegister);
 
-    ServerResponse receiveSensorRegisterFromMQ(SensorRegister sensorRegister);
+	ServerResponse receiveSensorRegisterFromMQ(SensorRegister sensorRegister);
+
+	ServerResponse getSensorRegisterById(Integer sensorRegisterId);
+
+	ServerResponse listSensorRegister();
+
+	ServerResponse update(SensorRegister sensorRegister);
+
+	ServerResponse updateEnterprise(SensorRegister sensorRegister);
 }

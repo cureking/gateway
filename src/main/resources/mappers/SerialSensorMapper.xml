@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renewable.gateway.dao.SerialSensorMapper" >
-  <resultMap id="BaseResultMap" type="com.renewable.gateway.pojo.SerialSensor" >
-    <constructor >
-      <idArg column="id" jdbcType="SMALLINT" javaType="java.lang.Short" />
-      <arg column="sensor_register_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="terminal_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="port" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="baudrate" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="model" jdbcType="BIT" javaType="java.lang.Boolean" />
-      <arg column="zero" jdbcType="BIT" javaType="java.lang.Boolean" />
-      <arg column="mark" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-    </constructor>
-  </resultMap>
-  <sql id="Base_Column_List" >
+<mapper namespace="com.renewable.gateway.dao.SerialSensorMapper">
+    <resultMap id="BaseResultMap" type="com.renewable.gateway.pojo.SerialSensor">
+        <constructor>
+            <idArg column="id" jdbcType="SMALLINT" javaType="java.lang.Short"/>
+            <arg column="sensor_register_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="terminal_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="port" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="address" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="baudrate" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="model" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="zero" jdbcType="BIT" javaType="java.lang.Boolean"/>
+            <arg column="mark" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, sensor_register_id, terminal_id, port, address, baudrate, model, zero, mark, 
     create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Short" >
-    select 
-    <include refid="Base_Column_List" />
-    from serial_sensor
-    where id = #{id,jdbcType=SMALLINT}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Short" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Short">
+        select
+        <include refid="Base_Column_List"/>
+        from serial_sensor
+        where id = #{id,jdbcType=SMALLINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Short">
     delete from serial_sensor
     where id = #{id,jdbcType=SMALLINT}
   </delete>
-  <insert id="insert" parameterType="com.renewable.gateway.pojo.SerialSensor" >
+    <insert id="insert" parameterType="com.renewable.gateway.pojo.SerialSensor">
     insert into serial_sensor (id, sensor_register_id, terminal_id, 
       port, address, baudrate, 
       model, zero, mark, create_time, 
@@ -40,116 +40,116 @@
       #{model,jdbcType=BIT}, #{zero,jdbcType=BIT}, #{mark,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.renewable.gateway.pojo.SerialSensor" >
-    insert into serial_sensor
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="sensorRegisterId != null" >
-        sensor_register_id,
-      </if>
-      <if test="terminalId != null" >
-        terminal_id,
-      </if>
-      <if test="port != null" >
-        port,
-      </if>
-      <if test="address != null" >
-        address,
-      </if>
-      <if test="baudrate != null" >
-        baudrate,
-      </if>
-      <if test="model != null" >
-        model,
-      </if>
-      <if test="zero != null" >
-        zero,
-      </if>
-      <if test="mark != null" >
-        mark,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=SMALLINT},
-      </if>
-      <if test="sensorRegisterId != null" >
-        #{sensorRegisterId,jdbcType=INTEGER},
-      </if>
-      <if test="terminalId != null" >
-        #{terminalId,jdbcType=INTEGER},
-      </if>
-      <if test="port != null" >
-        #{port,jdbcType=VARCHAR},
-      </if>
-      <if test="address != null" >
-        #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="baudrate != null" >
-        #{baudrate,jdbcType=INTEGER},
-      </if>
-      <if test="model != null" >
-        #{model,jdbcType=BIT},
-      </if>
-      <if test="zero != null" >
-        #{zero,jdbcType=BIT},
-      </if>
-      <if test="mark != null" >
-        #{mark,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renewable.gateway.pojo.SerialSensor" >
-    update serial_sensor
-    <set >
-      <if test="sensorRegisterId != null" >
-        sensor_register_id = #{sensorRegisterId,jdbcType=INTEGER},
-      </if>
-      <if test="terminalId != null" >
-        terminal_id = #{terminalId,jdbcType=INTEGER},
-      </if>
-      <if test="port != null" >
-        port = #{port,jdbcType=VARCHAR},
-      </if>
-      <if test="address != null" >
-        address = #{address,jdbcType=VARCHAR},
-      </if>
-      <if test="baudrate != null" >
-        baudrate = #{baudrate,jdbcType=INTEGER},
-      </if>
-      <if test="model != null" >
-        model = #{model,jdbcType=BIT},
-      </if>
-      <if test="zero != null" >
-        zero = #{zero,jdbcType=BIT},
-      </if>
-      <if test="mark != null" >
-        mark = #{mark,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=SMALLINT}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.renewable.gateway.pojo.SerialSensor" >
+    <insert id="insertSelective" parameterType="com.renewable.gateway.pojo.SerialSensor">
+        insert into serial_sensor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="sensorRegisterId != null">
+                sensor_register_id,
+            </if>
+            <if test="terminalId != null">
+                terminal_id,
+            </if>
+            <if test="port != null">
+                port,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="baudrate != null">
+                baudrate,
+            </if>
+            <if test="model != null">
+                model,
+            </if>
+            <if test="zero != null">
+                zero,
+            </if>
+            <if test="mark != null">
+                mark,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=SMALLINT},
+            </if>
+            <if test="sensorRegisterId != null">
+                #{sensorRegisterId,jdbcType=INTEGER},
+            </if>
+            <if test="terminalId != null">
+                #{terminalId,jdbcType=INTEGER},
+            </if>
+            <if test="port != null">
+                #{port,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="baudrate != null">
+                #{baudrate,jdbcType=INTEGER},
+            </if>
+            <if test="model != null">
+                #{model,jdbcType=BIT},
+            </if>
+            <if test="zero != null">
+                #{zero,jdbcType=BIT},
+            </if>
+            <if test="mark != null">
+                #{mark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.renewable.gateway.pojo.SerialSensor">
+        update serial_sensor
+        <set>
+            <if test="sensorRegisterId != null">
+                sensor_register_id = #{sensorRegisterId,jdbcType=INTEGER},
+            </if>
+            <if test="terminalId != null">
+                terminal_id = #{terminalId,jdbcType=INTEGER},
+            </if>
+            <if test="port != null">
+                port = #{port,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="baudrate != null">
+                baudrate = #{baudrate,jdbcType=INTEGER},
+            </if>
+            <if test="model != null">
+                model = #{model,jdbcType=BIT},
+            </if>
+            <if test="zero != null">
+                zero = #{zero,jdbcType=BIT},
+            </if>
+            <if test="mark != null">
+                mark = #{mark,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=SMALLINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.renewable.gateway.pojo.SerialSensor">
     update serial_sensor
     set sensor_register_id = #{sensorRegisterId,jdbcType=INTEGER},
       terminal_id = #{terminalId,jdbcType=INTEGER},
@@ -164,34 +164,76 @@
     where id = #{id,jdbcType=SMALLINT}
   </update>
 
-  <insert id="insertBatch">
+    <insert id="insertBatch">
+        insert into serial_sensor (id, sensor_register_id, terminal_id,
+        port, address, baudrate,
+        model, zero, mark, create_time,
+        update_time)
+        values
+        <foreach collection="serialSensorList" index="index" item="item" separator=",">
+            (#{item.id,jdbcType=SMALLINT}, #{item.sensorRegisterId,jdbcType=INTEGER},
+            #{item.terminalId,jdbcType=INTEGER},
+            #{item.port,jdbcType=VARCHAR}, #{item.address,jdbcType=VARCHAR}, #{item.baudrate,jdbcType=INTEGER},
+            #{item.model,jdbcType=BIT}, #{item.zero,jdbcType=BIT}, #{item.mark,jdbcType=VARCHAR},
+            #{item.createTime,jdbcType=TIMESTAMP},
+            #{item.updateTime,jdbcType=TIMESTAMP})
+        </foreach>
+    </insert>
+    <select id="selectByTerminalIdAndPort" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from serial_sensor
+        where terminal_id = #{terminalId}
+        and port = #{port}
+    </select>
+    <select id="selectByTerminalIdAndPortAndAddress" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from serial_sensor
+        where port = #{port}
+        and address = #{address}
+        <if test="terminalId != null">
+            and terminal_id = #{terminalId}
+        </if>
+    </select>
+    <select id="listSeriaLSensor" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from serial_sensor
+    </select>
+    <insert id="insertOrUpdate" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.renewable.gateway.pojo.SerialSensor">
     insert into serial_sensor (id, sensor_register_id, terminal_id,
-    port, address, baudrate,
-    model, zero, mark, create_time,
-    update_time)
-    values
-    <foreach collection="serialSensorList" index="index" item="item" separator=",">
-      (#{item.id,jdbcType=SMALLINT}, #{item.sensorRegisterId,jdbcType=INTEGER}, #{item.terminalId,jdbcType=INTEGER},
-      #{item.port,jdbcType=VARCHAR}, #{item.address,jdbcType=VARCHAR}, #{item.baudrate,jdbcType=INTEGER},
-      #{item.model,jdbcType=BIT}, #{item.zero,jdbcType=BIT}, #{item.mark,jdbcType=VARCHAR}, #{item.createTime,jdbcType=TIMESTAMP},
-      #{item.updateTime,jdbcType=TIMESTAMP})
-    </foreach>
-  </insert>
-  <select id="selectByTerminalIdAndPort" parameterType="map" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from serial_sensor
-    where terminal_id = #{terminalId}
-    and port = #{port}
-  </select>
-  <select id="selectByTerminalIdAndPortAndAddress" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List"/>
-    from serial_sensor
-    where port = #{port}
-    and address = #{address}
-    <if test="terminalId != null">
-      and terminalId = #{terminalId}
-    </if>
-  </select>
+      port, address, baudrate,
+      model, zero, mark, create_time,
+      update_time)
+    values (#{id,jdbcType=SMALLINT}, #{sensorRegisterId,jdbcType=INTEGER}, #{terminalId,jdbcType=INTEGER},
+      #{port,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{baudrate,jdbcType=INTEGER},
+      #{model,jdbcType=BIT}, #{zero,jdbcType=BIT}, #{mark,jdbcType=VARCHAR}, now(), now())
+      ON DUPLICATE KEY UPDATE
+        <if test="sensorRegisterId != null">
+            sensor_register_id = #{sensorRegisterId,jdbcType=INTEGER},
+        </if>
+        <if test="terminalId != null">
+            terminal_id = #{terminalId,jdbcType=INTEGER},
+        </if>
+        <if test="port != null">
+            port = #{port,jdbcType=VARCHAR},
+        </if>
+        <if test="address != null">
+            address = #{address,jdbcType=VARCHAR},
+        </if>
+        <if test="baudrate != null">
+            baudrate = #{baudrate,jdbcType=INTEGER},
+        </if>
+        <if test="model != null">
+            model = #{model,jdbcType=BIT},
+        </if>
+        <if test="zero != null">
+            zero = #{zero,jdbcType=BIT},
+        </if>
+        <if test="mark != null">
+            mark = #{mark,jdbcType=VARCHAR},
+        </if>
+            update_time = now()
+    </insert>
 </mapper>

@@ -14,69 +14,69 @@ import org.junit.Test;
  */
 public class HexUtilTest extends BaseSpringTestCase {
 
-    @Before
-    public void before() throws Exception {
-    }
+	@Before
+	public void before() throws Exception {
+	}
 
-    @After
-    public void after() throws Exception {
-    }
+	@After
+	public void after() throws Exception {
+	}
 
-    /**
-     * Method: main(String[] args)
-     */
-    @Test
-    public void testMain() throws Exception {
+	/**
+	 * Method: main(String[] args)
+	 */
+	@Test
+	public void testMain() throws Exception {
 //TODO: Test goes here...
 
-    }
+	}
 
-    /**
-     * Method: bytesToHexString(byte src)
-     */
-    @Test
-    public void testBytesToHexStringSrc() throws Exception {
+	/**
+	 * Method: bytesToHexString(byte src)
+	 */
+	@Test
+	public void testBytesToHexStringSrc() throws Exception {
 //TODO: Test goes here... 
-    }
+	}
 
-    /**
-     * Method: bytesToHexString(byte[] src, int mode)
-     */
-    @Test
-    public void testBytesToHexStringForSrcMode() throws Exception {
+	/**
+	 * Method: bytesToHexString(byte[] src, int mode)
+	 */
+	@Test
+	public void testBytesToHexStringForSrcMode() throws Exception {
 //TODO: Test goes here... 
-    }
+	}
 
-    /**
-     * Method: bcdToHexString(byte[] src)
-     */
-    @Test
-    public void testBcdToHexString() throws Exception {
+	/**
+	 * Method: bcdToHexString(byte[] src)
+	 */
+	@Test
+	public void testBcdToHexString() throws Exception {
 //TODO: Test goes here... 
-    }
+	}
 
-    /**
-     * Method: hexStringToBytes(String hexString)
-     */
-    @Test
-    public void testHexStringToBytes() throws Exception {
+	/**
+	 * Method: hexStringToBytes(String hexString)
+	 */
+	@Test
+	public void testHexStringToBytes() throws Exception {
 //TODO: Test goes here... 
-    }
+	}
 
-    /**
-     * Method: bcdStringToBytes(String hexString)
-     */
-    @Test
-    public void testBcdStringToBytes() throws Exception {
+	/**
+	 * Method: bcdStringToBytes(String hexString)
+	 */
+	@Test
+	public void testBcdStringToBytes() throws Exception {
 //TODO: Test goes here... 
-    }
+	}
 
 
-    /**
-     * Method: charToByte(char c)
-     */
-    @Test
-    public void testCharToByte() throws Exception {
+	/**
+	 * Method: charToByte(char c)
+	 */
+	@Test
+	public void testCharToByte() throws Exception {
 //TODO: Test goes here... 
 /* 
 try { 
@@ -88,6 +88,6 @@ try {
 } catch(InvocationTargetException e) { 
 } 
 */
-    }
+	}
 
 } 

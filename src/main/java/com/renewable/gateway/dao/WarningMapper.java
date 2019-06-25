@@ -6,20 +6,20 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface WarningMapper {
-    int deleteByPrimaryKey(Integer id);
+	int deleteByPrimaryKey(Integer id);
 
-    int insert(Warning record);
+	int insert(Warning record);
 
-    int insertSelective(Warning record);
+	int insertSelective(Warning record);
 
-    Warning selectByPrimaryKey(Integer id);
+	Warning selectByPrimaryKey(Integer id);
 
-    int updateByPrimaryKeySelective(Warning record);
+	int updateByPrimaryKeySelective(Warning record);
 
-    int updateByPrimaryKey(Warning record);
+	int updateByPrimaryKey(Warning record);
 
-    // custom
-    Long selectLastOringinId();
+	// custom
+	Long selectLastOringinId();
 
-    int insertBatch(@Param("warningList") List<Warning> warningList);
+	int insertBatch(@Param("warningList") List<Warning> warningList);
 }

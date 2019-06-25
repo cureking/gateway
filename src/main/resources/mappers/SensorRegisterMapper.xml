@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.renewable.gateway.dao.SensorRegisterMapper" >
-  <resultMap id="BaseResultMap" type="com.renewable.gateway.pojo.SensorRegister" >
-    <constructor >
-      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="terminal_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="sensor_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="nickname" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="status" jdbcType="TINYINT" javaType="java.lang.Byte" />
-      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-    </constructor>
-  </resultMap>
-  <sql id="Base_Column_List" >
+<mapper namespace="com.renewable.gateway.dao.SensorRegisterMapper">
+    <resultMap id="BaseResultMap" type="com.renewable.gateway.pojo.SensorRegister">
+        <constructor>
+            <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="terminal_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="sensor_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="nickname" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="status" jdbcType="TINYINT" javaType="java.lang.Byte"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        </constructor>
+    </resultMap>
+    <sql id="Base_Column_List">
     id, terminal_id, sensor_id, nickname, status, create_time, update_time
   </sql>
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-    select 
-    <include refid="Base_Column_List" />
-    from sensor_register
-    where id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from sensor_register
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from sensor_register
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.renewable.gateway.pojo.SensorRegister" >
+    <insert id="insert" parameterType="com.renewable.gateway.pojo.SensorRegister">
     insert into sensor_register (id, terminal_id, sensor_id, 
       nickname, status, create_time, 
       update_time)
@@ -33,80 +33,80 @@
       #{nickname,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP}, 
       #{updateTime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.renewable.gateway.pojo.SensorRegister" >
-    insert into sensor_register
-    <trim prefix="(" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        id,
-      </if>
-      <if test="terminalId != null" >
-        terminal_id,
-      </if>
-      <if test="sensorId != null" >
-        sensor_id,
-      </if>
-      <if test="nickname != null" >
-        nickname,
-      </if>
-      <if test="status != null" >
-        status,
-      </if>
-      <if test="createTime != null" >
-        create_time,
-      </if>
-      <if test="updateTime != null" >
-        update_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides="," >
-      <if test="id != null" >
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="terminalId != null" >
-        #{terminalId,jdbcType=INTEGER},
-      </if>
-      <if test="sensorId != null" >
-        #{sensorId,jdbcType=INTEGER},
-      </if>
-      <if test="nickname != null" >
-        #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        #{status,jdbcType=TINYINT},
-      </if>
-      <if test="createTime != null" >
-        #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.renewable.gateway.pojo.SensorRegister" >
-    update sensor_register
-    <set >
-      <if test="terminalId != null" >
-        terminal_id = #{terminalId,jdbcType=INTEGER},
-      </if>
-      <if test="sensorId != null" >
-        sensor_id = #{sensorId,jdbcType=INTEGER},
-      </if>
-      <if test="nickname != null" >
-        nickname = #{nickname,jdbcType=VARCHAR},
-      </if>
-      <if test="status != null" >
-        status = #{status,jdbcType=TINYINT},
-      </if>
-      <if test="createTime != null" >
-        create_time = #{createTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="updateTime != null" >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.renewable.gateway.pojo.SensorRegister" >
+    <insert id="insertSelective" parameterType="com.renewable.gateway.pojo.SensorRegister">
+        insert into sensor_register
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="terminalId != null">
+                terminal_id,
+            </if>
+            <if test="sensorId != null">
+                sensor_id,
+            </if>
+            <if test="nickname != null">
+                nickname,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="updateTime != null">
+                update_time,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="terminalId != null">
+                #{terminalId,jdbcType=INTEGER},
+            </if>
+            <if test="sensorId != null">
+                #{sensorId,jdbcType=INTEGER},
+            </if>
+            <if test="nickname != null">
+                #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.renewable.gateway.pojo.SensorRegister">
+        update sensor_register
+        <set>
+            <if test="terminalId != null">
+                terminal_id = #{terminalId,jdbcType=INTEGER},
+            </if>
+            <if test="sensorId != null">
+                sensor_id = #{sensorId,jdbcType=INTEGER},
+            </if>
+            <if test="nickname != null">
+                nickname = #{nickname,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=TINYINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.renewable.gateway.pojo.SensorRegister">
     update sensor_register
     set terminal_id = #{terminalId,jdbcType=INTEGER},
       sensor_id = #{sensorId,jdbcType=INTEGER},
@@ -116,7 +116,7 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <insert id="insertOrUpdate">
+    <insert id="insertOrUpdate" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.renewable.gateway.pojo.SensorRegister">
     insert
     into sensor_register
     (
@@ -124,14 +124,25 @@
     )
     VALUES
     values (#{id,jdbcType=INTEGER}, #{terminalId,jdbcType=INTEGER}, #{sensorId,jdbcType=INTEGER},
-      #{nickname,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, #{createTime,jdbcType=TIMESTAMP},
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{nickname,jdbcType=VARCHAR}, #{status,jdbcType=TINYINT}, now(), now())
     ON DUPLICATE KEY UPDATE
-      terminal_id = #{terminalId,jdbcType=INTEGER},
-      sensor_id = #{sensorId,jdbcType=INTEGER},
-      nickname = #{nickname,jdbcType=VARCHAR},
-      status = #{status,jdbcType=TINYINT},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = now()
+        <if test="terminalId != null">
+            terminal_id = #{terminalId,jdbcType=INTEGER},
+        </if>
+        <if test="sensorId != null">
+            sensor_id = #{sensorId,jdbcType=INTEGER},
+        </if>
+        <if test="nickname != null">
+            nickname = #{nickname,jdbcType=VARCHAR},
+        </if>
+        <if test="status != null">
+            status = #{status,jdbcType=TINYINT},
+        </if>
+            update_time = now()
   </insert>
+    <select id="listSensorRegister" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from sensor_register
+    </select>
 </mapper>

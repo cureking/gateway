@@ -1,17 +1,17 @@
 package com.renewable.gateway.exception.serial;
 
 public class PortInUse extends Exception {
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
 
-    public PortInUse() {
-    }
+	public PortInUse() {
+	}
 
-    @Override
-    public String toString() {
-        return "端口已被占用！打开串口操作失败！";
-    }
+	@Override
+	public String toString() {
+		return "端口已被占用！打开串口操作失败！";
+	}
 
 }

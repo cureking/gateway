@@ -7,24 +7,24 @@ import java.util.Date;
 import java.util.List;
 
 public interface InclinationDealedTotalMapper {
-    int deleteByPrimaryKey(Long id);
+	int deleteByPrimaryKey(Long id);
 
-    int insert(InclinationDealedTotal record);
+	int insert(InclinationDealedTotal record);
 
-    int insertSelective(InclinationDealedTotal record);
+	int insertSelective(InclinationDealedTotal record);
 
-    InclinationDealedTotal selectByPrimaryKey(Long id);
+	InclinationDealedTotal selectByPrimaryKey(Long id);
 
-    int updateByPrimaryKeySelective(InclinationDealedTotal record);
+	int updateByPrimaryKeySelective(InclinationDealedTotal record);
 
-    int updateByPrimaryKey(InclinationDealedTotal record);
+	int updateByPrimaryKey(InclinationDealedTotal record);
 
-    //custom
-    List<InclinationDealedTotal> selectList(int sensor_identifier);
+	//custom
+	List<InclinationDealedTotal> selectList(int sensor_identifier);
 
-    List<InclinationDealedTotal> selectListByVersionAndLimit(@Param("version")String version, @Param("limit") int limit);
+	List<InclinationDealedTotal> selectListByVersionAndLimit(@Param("version") String version, @Param("limit") int limit);
 
-    List<InclinationDealedTotal> selectListByTime(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("sensor_identifier") int sensor_identifier);
+	List<InclinationDealedTotal> selectListByTime(@Param("startTime") Date startTime, @Param("endTime") Date endTime, @Param("sensor_identifier") int sensor_identifier);
 
-    int updateBatch(@Param(value = "inclinationDealedTotalList")List<InclinationDealedTotal> inclinationDealedTotalList);
+	int updateVersionBatch(@Param(value = "inclinationDealedTotalList") List<InclinationDealedTotal> inclinationDealedTotalList);
 }
